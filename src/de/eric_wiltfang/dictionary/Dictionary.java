@@ -108,7 +108,11 @@ public class Dictionary {
 			}
 		}
 		try {
-			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(workingDirectory + "/settings.json"), Charset.forName("UTF-8"));
+			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(workingDirectory + "/VERSION"), Charset.forName("UTF-8"));
+			writer.write("1.0");
+			writer.close();
+			
+			writer = new OutputStreamWriter(new FileOutputStream(workingDirectory + "/settings.json"), Charset.forName("UTF-8"));
 			settings.save(writer);
 			writer.close();
 			
