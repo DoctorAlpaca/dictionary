@@ -24,8 +24,8 @@ public class CostumFileChooser extends JFileChooser {
 			case JOptionPane.CANCEL_OPTION:
 				cancelSelection();
 				return;
-		}
+			}
+	    }
+	    super.approveSelection();
 	}
-	super.approveSelection();
-}
 }
