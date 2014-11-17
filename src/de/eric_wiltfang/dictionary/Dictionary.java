@@ -17,8 +17,6 @@ import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
 
-import java.util.UUID;
-
 public class Dictionary {
 	private DictionarySettings settings;
 	private Path workingDirectory;
