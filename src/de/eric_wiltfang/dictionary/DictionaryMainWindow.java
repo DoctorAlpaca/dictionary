@@ -377,22 +377,6 @@ public class DictionaryMainWindow {
 		mnEdit.add(mntmEditDictionarySettings);
 		needDictionary.add(mntmEditDictionarySettings);
 		
-//		JMenu mnDebug = new JMenu("Debug");
-//		menuBar.add(mnDebug);
-//		
-//		JMenuItem mntmInsertgarbage = new JMenuItem("InsertGarbage");
-//		mntmInsertgarbage.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					int num = Integer.parseInt(JOptionPane.showInputDialog("How much garbage are we talking about here...?"));
-//					dic.insertJunk(num);
-//				} catch (Exception ex) {
-//					showError("Garbage error", ex);
-//				}
-//			}
-//		});
-//		mnDebug.add(mntmInsertgarbage);
-		
 		frmDictionaryEditor.getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,

@@ -263,20 +263,6 @@ public class Dictionary {
 		return entries;
 	}
 	
-	public void insertJunk(int amount) throws SQLException {
-		int steps = amount / 100;
-		for (int i = 0; i < amount; i++) {
-			Entry e = new Entry();
-			e.setWord(UUID.randomUUID().toString());
-			e.setDefinition(UUID.randomUUID().toString());
-			e.insertSelf(connection);
-			if (i % steps == 0) {
-				System.out.println(i*100/amount + "%"); // TODO remove debug
-			}
-		}
-		broadcast(new DictionaryEvent(this, DictionaryEventType.OTHER, -1));
-	}
-	
 	public void addDictionaryListener(DictionaryListener l) {
 		listeners.add(l);
 	}
