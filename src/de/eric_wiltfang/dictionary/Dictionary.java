@@ -11,8 +11,6 @@ import java.sql.*;
 import java.util.EnumSet;
 import java.util.Vector;
 
-import org.json.*;
-
 import de.eric_wiltfang.dictionary.DictionaryEvent.DictionaryEventType;
 import de.eric_wiltfang.dictionary.Exporter.ExporterSettings;
 import net.lingala.zip4j.core.ZipFile;
@@ -86,10 +84,7 @@ public class Dictionary {
 			zip.extractAll(workingDirectory.toString());
 			
 			InputStreamReader reader = new InputStreamReader(new FileInputStream(workingDirectory + "/settings.json"), Charset.forName("UTF-8"));
-			JSONTokener tokener = new JSONTokener(reader);
-			JSONObject settingsJSON = new JSONObject(tokener);
-			// TODO Move this over to the Settings class
-			settings.setName(settingsJSON.getString("langName"));
+			settings.load(reader);
 			
 			connectDatabase();
 		} catch(Exception e) {
@@ -112,12 +107,9 @@ public class Dictionary {
 				throw new IOException("Coulnd't save; File " + target + " already exists and can't be deleted: " + e);
 			}
 		}
-		JSONObject settingsJSON = new JSONObject();
-		settingsJSON.put("version", "0.0.0");
-		settingsJSON.put("langName", settings.getName());
 		try {
 			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(workingDirectory + "/settings.json"), Charset.forName("UTF-8"));
-			settingsJSON.write(writer);
+			settings.save(writer);
 			writer.close();
 			
 			ZipFile zip = new ZipFile(target);
