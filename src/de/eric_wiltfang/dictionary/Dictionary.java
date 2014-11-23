@@ -30,7 +30,7 @@ public class Dictionary {
 		try {
 			workingDirectory = Files.createTempDirectory("dict");
 		} catch (IOException e) {
-			throw new IOException("Couldn't create temporary directory: " + e);
+			throw new IOException(DictionaryMainWindow.local.get("eTempFail") + " " + e);
 		}
 	}
 	/** 
@@ -49,7 +49,7 @@ public class Dictionary {
 
 			workingDirectory.toFile().delete();
 		} catch(Exception e) {
-			throw new IOException("Couldn't clean up: " + e);
+			throw new IOException(DictionaryMainWindow.local.get("eCleanupFail") + " " + e);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class Dictionary {
 		try {
 			connection = DriverManager.getConnection("jdbc:h2:" + workingDirectory + "/db", "sa", "");
 		} catch (SQLException e) {
-			throw new IOException("Couldn't connect to Database: " + e);
+			throw new IOException(DictionaryMainWindow.local.get("eDBConFail") + " " + e);
 		}
 	}
 	private void init() throws IOException, SQLException {
@@ -86,7 +86,7 @@ public class Dictionary {
 			
 			connectDatabase();
 		} catch(Exception e) {
-			throw new IOException("Coulnd't load file: " + e);
+			throw new IOException(DictionaryMainWindow.local.get("eFileFail") + " " + e);
 		}
 	}
 	/**
@@ -96,13 +96,13 @@ public class Dictionary {
 		try {
 			connection.close();
 		} catch(Exception e) {
-			throw new Exception("Coulnd't release database for saving: " + e);
+			throw new Exception(DictionaryMainWindow.local.get("eReleaseFail") + " " + e);
 		}
 		if (Files.exists(target.toPath())) {
 			try {
 				Files.delete(target.toPath());
 			} catch (IOException e) {
-				throw new IOException("Coulnd't save; File " + target + " already exists and can't be deleted: " + e);
+				throw new IOException(DictionaryMainWindow.local.get("eSaveFail1") + " " + target + DictionaryMainWindow.local.get("eSaveFail2")+ " " + e);
 			}
 		}
 		try {
@@ -126,7 +126,7 @@ public class Dictionary {
 				zip.addFile(f, parameters);
 			}
 		} catch (Exception e) {
-			throw new IOException("Coulnd't save: " + e);
+			throw new IOException(DictionaryMainWindow.local.get("eSaveFailS") + " " + e);
 		}
 		connectDatabase();
 	}

@@ -107,7 +107,7 @@ public class EditEntryWindow {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.LINE_GAP_ROWSPEC,}));
 		
-		JLabel lblWord = new JLabel("Word");
+		JLabel lblWord = new JLabel(DictionaryMainWindow.local.get("sWCName"));
 		lblWord.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblWord, "2, 2, right, default");
 		frame.addComponentListener(new ComponentAdapter() {
@@ -128,7 +128,7 @@ public class EditEntryWindow {
 		wordTextField.setColumns(10);
 		wordTextField.addKeyListener(keyAdapter);
 		
-		JLabel lblDefinition = new JLabel("Definition");
+		JLabel lblDefinition = new JLabel(DictionaryMainWindow.local.get("sDCName"));
 		lblDefinition.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblDefinition, "2, 4");
 		
@@ -152,7 +152,7 @@ public class EditEntryWindow {
 		});
 		defTextArea.addKeyListener(keyAdapter);
 		
-		JLabel lblNotes = new JLabel("Notes");
+		JLabel lblNotes = new JLabel(DictionaryMainWindow.local.get("sNCName"));
 		lblNotes.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblNotes, "2, 6");
 		
@@ -176,7 +176,7 @@ public class EditEntryWindow {
 		});
 		notesTextArea.addKeyListener(keyAdapter);
 		
-		JLabel lblCategory = new JLabel("Category");
+		JLabel lblCategory = new JLabel(DictionaryMainWindow.local.get("sCCName"));
 		lblCategory.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblCategory, "2, 8, right, default");
 		
@@ -185,7 +185,7 @@ public class EditEntryWindow {
 		catTextField.setColumns(10);
 		catTextField.addKeyListener(keyAdapter);
 		
-		JLabel lblTags = new JLabel("Tags");
+		JLabel lblTags = new JLabel(DictionaryMainWindow.local.get("sTCName"));
 		lblTags.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblTags, "2, 10, right, default");
 		
@@ -194,7 +194,7 @@ public class EditEntryWindow {
 		tagsTextField.setColumns(10);
 		tagsTextField.addKeyListener(keyAdapter);
 		
-		btnSave = new JButton("Save");
+		btnSave = new JButton(DictionaryMainWindow.local.get("pSave"));
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveEntry();
@@ -202,7 +202,7 @@ public class EditEntryWindow {
 		});
 		frame.getContentPane().add(btnSave, "4, 12");
 		
-		btnCancel = new JButton("Cancel");
+		btnCancel = new JButton(DictionaryMainWindow.local.get("dCancel"));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Maybe ask for saving?
@@ -245,7 +245,7 @@ public class EditEntryWindow {
 			updateEntry();
 			dic.insertEntry(entry);
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(frame, "Error while saving: " + ex, "Error while saving", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(frame, DictionaryMainWindow.local.get("eSave") + " " + ex, DictionaryMainWindow.local.get("eSaveS"), JOptionPane.ERROR_MESSAGE);
 		}
 		
 		if (newEntryOnSave) {
@@ -265,11 +265,11 @@ public class EditEntryWindow {
 	public void setNewEntryOnSave(boolean b) {
 		newEntryOnSave = b;
 		if (b) {
-			btnSave.setText("Save & enter next");
-			btnCancel.setText("Stop entering new words");
+			btnSave.setText(DictionaryMainWindow.local.get("dSaveNext"));
+			btnCancel.setText(DictionaryMainWindow.local.get("dSaveStop"));
 		} else {
-			btnSave.setText("Save");
-			btnCancel.setText("Cancel");
+			btnSave.setText(DictionaryMainWindow.local.get("pSave"));
+			btnCancel.setText(DictionaryMainWindow.local.get("dCancel"));
 		}
 	}
 }

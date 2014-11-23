@@ -40,7 +40,7 @@ public class EditDictionarySettingsDialog extends JDialog {
 	private void showDialog(DictionarySettings settings) {
 		setModal(true);
 		setResizable(false);
-		setTitle("Create new dictionary");
+		setTitle(DictionaryMainWindow.local.get("pStateCreate"));
 		setBounds(100, 100, 400, 115);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -54,7 +54,7 @@ public class EditDictionarySettingsDialog extends JDialog {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		{
-			JLabel lblLanguageName = new JLabel("Language Name:");
+			JLabel lblLanguageName = new JLabel(DictionaryMainWindow.local.get("pLangName") + " ");
 			contentPanel.add(lblLanguageName, "2, 2, right, default");
 		}
 		{
@@ -68,7 +68,7 @@ public class EditDictionarySettingsDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton(DictionaryMainWindow.local.get("dOK"));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						confirmed = true;
@@ -76,12 +76,12 @@ public class EditDictionarySettingsDialog extends JDialog {
 						dispose();
 					}
 				});
-				okButton.setActionCommand("OK");
+				okButton.setActionCommand(DictionaryMainWindow.local.get("dOK"));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton(DictionaryMainWindow.local.get("dCancel"));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						confirmed = false;
@@ -89,7 +89,7 @@ public class EditDictionarySettingsDialog extends JDialog {
 						dispose();
 					}
 				});
-				cancelButton.setActionCommand("Cancel");
+				cancelButton.setActionCommand(DictionaryMainWindow.local.get("dCancel"));
 				buttonPane.add(cancelButton);
 			}
 		}

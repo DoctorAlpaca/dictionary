@@ -1,4 +1,6 @@
 /target/
+/.idea/
 *.prefs
 .project
 .classpath
+dictionary.iml
