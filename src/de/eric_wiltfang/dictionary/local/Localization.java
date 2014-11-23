@@ -40,6 +40,7 @@ public class Localization extends java.util.HashMap<String, String>{
                 File[] files = dir.listFiles();
                 assert files != null;
                 for(File file : files) if(file.isFile() && file.getAbsolutePath().endsWith(".lang")){
+                    if(!file.getName().endsWith(".lang")) continue;
                     if(new File(d + "assets/" + file.getName()).exists()) continue;
                     BufferedReader r = new BufferedReader(new FileReader(file));
                     FileWriter w = new FileWriter(d + "assets/" + file.getName());
@@ -55,7 +56,7 @@ public class Localization extends java.util.HashMap<String, String>{
                 ZipInputStream jar = new ZipInputStream(jarl.openStream());
                 ZipEntry en;
                 while(null != (en = jar.getNextEntry())){
-                    if(!en.getName().startsWith("assets"))
+                    if(!en.getName().startsWith("assets")||!en.getName().endsWith(".lang"))
                         continue;
                     String line, f = d + "assets/" + en.getName().substring(en.getName().lastIndexOf("/") + 1);
                     if(new File(f).exists())

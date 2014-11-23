@@ -8,6 +8,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
+import de.eric_wiltfang.dictionary.local.LocalizationHelper;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -136,7 +137,6 @@ public class EditEntryWindow {
 		frame.getContentPane().add(defScrollPane, "4, 4, 3, 1, fill, fill");
 		
 		defTextArea = new JTextArea();
-		defTextArea.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		defScrollPane.setViewportView(defTextArea);
 		defTextArea.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -160,7 +160,6 @@ public class EditEntryWindow {
 		frame.getContentPane().add(notesScrollPane, "4, 6, 3, 1, fill, fill");
 		
 		notesTextArea = new JTextArea();
-		notesTextArea.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		notesScrollPane.setViewportView(notesTextArea);
 		notesTextArea.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {

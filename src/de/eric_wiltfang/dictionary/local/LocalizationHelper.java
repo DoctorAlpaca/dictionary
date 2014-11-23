@@ -4,7 +4,7 @@ import de.eric_wiltfang.dictionary.Dictionary;
 import de.eric_wiltfang.dictionary.DictionaryMainWindow;
 
 import javax.swing.JFrame;
-import java.awt.*;
+import java.awt.Point;
 import java.io.File;
 
 /**

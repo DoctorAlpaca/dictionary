@@ -65,6 +65,7 @@ public class DictionaryMainWindow {
 					UIManager.setLookAndFeel(
 						UIManager.getSystemLookAndFeelClassName()
 					);
+					UIManager.put("TextArea.font",UIManager.get("Table.font"));
 				} catch (Exception ex) {
 					// No biggie, default style works too.
 				}
