@@ -1,23 +1,10 @@
 package de.eric_wiltfang.dictionary;
-import java.awt.EventQueue;
+import java.awt.*;
 
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JTable;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -27,30 +14,21 @@ import com.jgoodies.forms.factories.FormFactory;
 import de.eric_wiltfang.dictionary.csv.CSVExporterDialog;
 import de.eric_wiltfang.dictionary.csv.CSVImporterDialog;
 import de.eric_wiltfang.dictionary.html.HTMLExporter;
+import de.eric_wiltfang.dictionary.local.Idle;
 import de.eric_wiltfang.dictionary.local.Localization;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.swing.ListSelectionModel;
-import javax.swing.ScrollPaneConstants;
-
-import java.awt.Point;
-
-import javax.swing.JProgressBar;
-import javax.swing.JPopupMenu;
-
-import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
@@ -80,6 +58,7 @@ public class DictionaryMainWindow {
 	 */
 	public static void main(String[] args) {
 		local = new Localization();
+		Idle.argsHolder = args;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -140,7 +119,27 @@ public class DictionaryMainWindow {
 		needDictionary.add(mntnDeleteRightClick);
 		
 		setComponentEnabled(false);
-		setStatus("Welcome", false);
+		setStatus(local.get("gWelcome"), false);
+
+		if(null != Idle.location) frmDictionaryEditor.setLocation(Idle.location);
+		if(null != Idle.dic) resume();
+	}
+
+	/**
+	 * Re-opens dictionary after restart.
+	 */
+	private void resume(){
+		try {
+			setStatus(local.get("pStatLoading"), true);
+			Dictionary dic = Idle.dic;
+			frmDictionaryEditor.setTitle(local.get("gTitle") + ": " + dic.getName());
+			defaultFile = Idle.dict;
+			setDictionary(dic);
+			changed = false;
+			setStatus(local.get("pStatLoaded"), false);
+		} catch(Exception e){
+			showError(local.get("eStatLoaded"), e);
+		}
 	}
 
 	/**
@@ -205,7 +204,8 @@ public class DictionaryMainWindow {
 				if (chooser.showOpenDialog(frmDictionaryEditor) == CostumFileChooser.APPROVE_OPTION) {
 					try {
 						setStatus(local.get("pStatLoading"), true);
-						Dictionary dic = Dictionary.createFromFile(chooser.getSelectedFile());
+						Idle.dict = chooser.getSelectedFile();
+						Dictionary dic = Dictionary.createFromFile(Idle.dict);
 						frmDictionaryEditor.setTitle(local.get("gTitle") + ": " + dic.getName());
 						defaultFile = chooser.getSelectedFile();
 						setDictionary(dic);
@@ -307,7 +307,21 @@ public class DictionaryMainWindow {
 				quit();
 			}
 		});
-		
+
+		JMenuItem mntmPref = new JMenuItem(local.get("pPrefs"));
+		mntmPref.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent){
+				showPreferences();
+			}
+		});
+
+		JSeparator separator_4 = new JSeparator();
+		mnFile.add(separator_4);
+
+		if(Localization.emergencyMode) mntmPref.setEnabled(false);
+		mnFile.add(mntmPref);
+
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
 		mntmQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
@@ -395,7 +409,7 @@ public class DictionaryMainWindow {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblSearch = new JLabel("Search");
+		JLabel lblSearch = new JLabel(local.get("pSearch"));
 		frmDictionaryEditor.getContentPane().add(lblSearch, "2, 2, right, default");
 		
 		searchField = new JTextField();
@@ -406,7 +420,7 @@ public class DictionaryMainWindow {
 					try {
 						model.searchFor(key);
 					} catch (SQLException ex) {
-						showError("Internal error", ex);
+						showError(local.get("eInternalError"), ex);
 					}
 				}
 			}
@@ -575,6 +589,75 @@ public class DictionaryMainWindow {
 			showError(local.get("eInternalError"), ex);
 		}
 	}
+
+	private void showPreferences() {
+		final JDialog choose = new JDialog(frmDictionaryEditor, local.get("pPrefs"), Dialog.ModalityType.APPLICATION_MODAL);
+		choose.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+		GridBagLayout lay = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
+		Container pane = choose.getContentPane();
+		pane.setLayout(lay);
+
+		JLabel label = new JLabel(local.get("sChooseLang"));
+		final JComboBox<String> langs = new JComboBox<String>(Localization.getLangs());
+		JButton cancel = new JButton(local.get("dCancel")),
+				accept = new JButton(local.get("dAccept"));
+
+		cancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				choose.setVisible(false);
+			}
+		});
+
+		accept.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				try {
+					FileWriter w = new FileWriter(Localization.d + "lang.string");
+					w.write(langs.getSelectedItem().toString());
+					w.close();
+
+					Idle.dic = dic;
+					/*if(askForSave() && (dic != null)) {
+						try {
+							dic.cleanup();
+						} catch (IOException ex) {
+							showError(local.get("eCleanupError"), ex);
+						}
+					}*/
+					Idle.restart(frmDictionaryEditor);
+				} catch(Exception e1){
+					// I, too, like to live dangerously.
+				}
+			}
+		});
+
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 3;
+		c.insets = new Insets(12,12,4,12);
+		pane.add(label, c);
+		c.gridy = 1;
+		c.insets = new Insets(4,12,1,12);
+		pane.add(langs, c);
+		c.gridy = 2;
+		c.gridwidth = 1;
+		c.insets = new Insets(5,12,12,1);
+		pane.add(cancel, c);
+		c.gridx = 1;
+		c.gridwidth = 2;
+		c.insets = new Insets(5,1,12,12);
+		pane.add(accept, c);
+
+		choose.pack();
+		choose.setLocationRelativeTo(null);
+
+		choose.setVisible(true);
+	}
+
 	private void quit() {
 		if (!askForSave()) {
 			return;

@@ -5,6 +5,7 @@ import de.eric_wiltfang.dictionary.DictionaryMainWindow;
 import javax.swing.*;
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -13,9 +14,10 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class Localization extends java.util.HashMap<String, String>{
-
+    public static boolean emergencyMode = false;
+    public static String d;
     public Localization(){
-        String OS = System.getProperty("os.name").toLowerCase(),d;
+        String OS = System.getProperty("os.name").toLowerCase();
         if(OS.contains("win")) d = System.getenv("AppData") + "/.ewdictionary/"; else {
             d = System.getProperty("user.home");
             if(OS.contains("mac")) d += "/Library/Application Support/";
@@ -90,6 +92,7 @@ public class Localization extends java.util.HashMap<String, String>{
         } catch(Exception e){
             System.out.println("Could not properly initialize localisation. Emergency Mode Activated");
             clear();
+            emergencyMode = true;
             try {
                 BufferedReader r = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("assets/English.lang")));
                 String k, l;
@@ -106,5 +109,17 @@ public class Localization extends java.util.HashMap<String, String>{
                 System.exit(-1);
             }
         }
+    }
+    public static String[] getLangs(){
+        File dir = new File(d + "assets/");
+        File[] files = dir.listFiles();
+        ArrayList<String> out = new ArrayList<String>();
+        String name;
+        for(File f: files){
+            name = f.getName();
+            if(!name.endsWith(".lang")) continue;
+            out.add(name.substring(0,name.lastIndexOf(".")));
+        }
+        return out.toArray(new String[out.size()]);
     }
 }
