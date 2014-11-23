@@ -76,10 +76,10 @@ public class EntryTableModel implements TableModel, DictionaryListener {
 	@Override
 	public String getColumnName(int col) {
 		switch (col) {
-		case 0: return "Word";
-		case 1: return "Definition";
-		case 2: return "Category";
-		case 3: return "Tags";
+		case 0: return DictionaryMainWindow.local.get("sWCName");
+		case 1: return DictionaryMainWindow.local.get("sDCName");
+		case 2: return DictionaryMainWindow.local.get("sCCName");
+		case 3: return DictionaryMainWindow.local.get("sCTName");
 		default:
 			return null;
 		}
@@ -96,7 +96,7 @@ public class EntryTableModel implements TableModel, DictionaryListener {
 		try {
 			entry = dic.getEntry(ids.get(row));
 		} catch (Exception ex) {
-			return "Error: " + ex;
+			return DictionaryMainWindow.local.get("sErr") + " " + ex;
 		}
 		switch(col) {
 		case 0:

@@ -14,10 +14,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 
-import de.eric_wiltfang.dictionary.CostumFileChooser;
-import de.eric_wiltfang.dictionary.Dictionary;
-import de.eric_wiltfang.dictionary.DictionarySettings;
-import de.eric_wiltfang.dictionary.ErrorDialog;
+import de.eric_wiltfang.dictionary.*;
 
 import javax.swing.JCheckBox;
 
@@ -65,7 +62,7 @@ public class CSVExporterDialog extends JDialog {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		{
-			chckbxAddColumnHeaders = new JCheckBox("Add column headers");
+			chckbxAddColumnHeaders = new JCheckBox(DictionaryMainWindow.local.get("pAddCollH"));
 			contentPanel.add(chckbxAddColumnHeaders, "2, 2");
 		}
 		{
@@ -73,11 +70,11 @@ public class CSVExporterDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Export");
+				JButton okButton = new JButton(DictionaryMainWindow.local.get("dExport"));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						CostumFileChooser chooser = new CostumFileChooser();
-						FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV file", "csv");
+						FileNameExtensionFilter filter = new FileNameExtensionFilter(DictionaryMainWindow.local.get("dCSVFilter2"), "csv");
 						chooser.setFileFilter(filter);
 						if (!dic.getName().isEmpty()) {
 							chooser.setSelectedFile(new File(dic.getName() + ".csv"));
@@ -93,26 +90,26 @@ public class CSVExporterDialog extends JDialog {
 								setVisible(false);
 								dispose();
 							} catch (Exception ex) {
-								ErrorDialog.showError("Error while exporting", ex);
+								ErrorDialog.showError(DictionaryMainWindow.local.get("eStatExport"), ex);
 							}
 						} else {
 							return;
 						}
 					}
 				});
-				okButton.setActionCommand("OK");
+				okButton.setActionCommand(DictionaryMainWindow.local.get("dOK"));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton(DictionaryMainWindow.local.get("dCancel"));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
 						dispose();
 					}
 				});
-				cancelButton.setActionCommand("Cancel");
+				cancelButton.setActionCommand(DictionaryMainWindow.local.get("dCancel"));
 				buttonPane.add(cancelButton);
 			}
 		}
