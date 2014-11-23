@@ -95,7 +95,7 @@ public class Localization extends java.util.HashMap<String, String>{
                 String k, l;
                 while(null != (l = r.readLine())){
                     l = l.trim();
-                    if(l.startsWith("#") || !l.contains("=")) continue;
+                    if(l.startsWith("#") || !l.contains("=") || l.equals("")) continue;
                     k = l.substring(0,l.indexOf("=")).trim();
                     l = l.substring(l.indexOf("=")+1).trim();
                     put(k,l);
