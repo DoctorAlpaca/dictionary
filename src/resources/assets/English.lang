@@ -33,6 +33,7 @@ sCCName = Category
 sTCName = Tags
 sNCName = Notes
 sErr = Error:
+pUseLast = Always open last dictionary
 pNewEntry = New entry
 pMultNew = Multiple new entries
 pEditSel = Edit selected

@@ -3,8 +3,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.InputEvent;
+import java.awt.event.*;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -16,28 +15,22 @@ import de.eric_wiltfang.dictionary.csv.CSVImporterDialog;
 import de.eric_wiltfang.dictionary.html.HTMLExporter;
 import de.eric_wiltfang.dictionary.local.LocalizationHelper;
 import de.eric_wiltfang.dictionary.local.Localization;
+import de.eric_wiltfang.dictionary.local.Settings;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 public class DictionaryMainWindow {
 
 	public static Localization local;
+	public static Settings pSettings;
 
 	private JFrame frmDictionaryEditor;
 	private JTextField searchField;
@@ -58,6 +51,7 @@ public class DictionaryMainWindow {
 	 */
 	public static void main(String[] args) {
 		local = new Localization();
+		pSettings = new Settings();
 		LocalizationHelper.argsHolder = args;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -124,6 +118,20 @@ public class DictionaryMainWindow {
 
 		if(null != LocalizationHelper.location) frmDictionaryEditor.setLocation(LocalizationHelper.location);
 		if(null != LocalizationHelper.dic) resume();
+		else if(pSettings.containsKey("useLast") && pSettings.get("useLast").equals("true")
+				&& pSettings.containsKey("lastFile") && new File(pSettings.get("lastFile")).exists()){
+			try {
+				setStatus(local.get("pStatLoading"), true);
+				Dictionary dic = Dictionary.createFromFile(new File(pSettings.get("lastFile")));
+				frmDictionaryEditor.setTitle(local.get("gTitle") + ": " + dic.getName());
+				defaultFile = new File(pSettings.get("lastFile"));
+				setDictionary(dic);
+				changed = false;
+				setStatus(local.get("pStatLoaded"),false);
+			} catch(Exception e){
+				showError(local.get("eStatLoaded"), e);
+			}
+		}
 	}
 
 	/**
@@ -212,6 +220,8 @@ public class DictionaryMainWindow {
 						setDictionary(dic);
 						changed = false;
 						setStatus(local.get("pStatLoaded"), false);
+						pSettings.put("lastFile",chooser.getSelectedFile().getAbsolutePath());
+						pSettings.write();
 					} catch (Exception ex) {
 						showError(local.get("eStatLoaded"), ex);
 					}
@@ -317,11 +327,29 @@ public class DictionaryMainWindow {
 			}
 		});
 
+		final JCheckBoxMenuItem mntmUseLast = new JCheckBoxMenuItem(local.get("pUseLast"));
+		mntmUseLast.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e){
+				if(mntmUseLast.isSelected()){
+					pSettings.put("useLast","true");
+				} else {
+					pSettings.put("useLast","false");
+				}
+				try {
+					pSettings.write();
+				} catch(Exception e1){}
+			}
+		});
+
 		JSeparator separator_4 = new JSeparator();
 		mnFile.add(separator_4);
 
 		if(Localization.emergencyMode) mntmPref.setEnabled(false);
 		mnFile.add(mntmPref);
+
+		if(pSettings.containsKey("useLast") && pSettings.get("useLast").equals("true")) mntmUseLast.setSelected(true);
+		mnFile.add(mntmUseLast);
 
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
@@ -621,13 +649,6 @@ public class DictionaryMainWindow {
 					w.close();
 
 					LocalizationHelper.dic = dic;
-					/*if(askForSave() && (dic != null)) {
-						try {
-							dic.cleanup();
-						} catch (IOException ex) {
-							showError(local.get("eCleanupError"), ex);
-						}
-					}*/
 					LocalizationHelper.restart(frmDictionaryEditor);
 				} catch(Exception e1){
 					// I, too, like to live dangerously.
@@ -670,6 +691,11 @@ public class DictionaryMainWindow {
 			} catch (IOException ex) {
 				showError(local.get("eCleanupError"), ex);
 			}
+		}
+		try {
+			pSettings.write();
+		} catch(IOException e){
+			// Nope.
 		}
 		System.exit(0);
 	}
