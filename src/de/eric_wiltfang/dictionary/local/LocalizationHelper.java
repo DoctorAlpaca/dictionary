@@ -11,7 +11,7 @@ import java.io.File;
  * @author cofl
  *
  */
-public class Idle {
+public class LocalizationHelper {
     public static String[] argsHolder;
     public static File dict = null;
     public static Dictionary dic = null;

@@ -14,7 +14,7 @@ import com.jgoodies.forms.factories.FormFactory;
 import de.eric_wiltfang.dictionary.csv.CSVExporterDialog;
 import de.eric_wiltfang.dictionary.csv.CSVImporterDialog;
 import de.eric_wiltfang.dictionary.html.HTMLExporter;
-import de.eric_wiltfang.dictionary.local.Idle;
+import de.eric_wiltfang.dictionary.local.LocalizationHelper;
 import de.eric_wiltfang.dictionary.local.Localization;
 
 import javax.swing.event.TableModelEvent;
@@ -58,7 +58,7 @@ public class DictionaryMainWindow {
 	 */
 	public static void main(String[] args) {
 		local = new Localization();
-		Idle.argsHolder = args;
+		LocalizationHelper.argsHolder = args;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -121,8 +121,8 @@ public class DictionaryMainWindow {
 		setComponentEnabled(false);
 		setStatus(local.get("gWelcome"), false);
 
-		if(null != Idle.location) frmDictionaryEditor.setLocation(Idle.location);
-		if(null != Idle.dic) resume();
+		if(null != LocalizationHelper.location) frmDictionaryEditor.setLocation(LocalizationHelper.location);
+		if(null != LocalizationHelper.dic) resume();
 	}
 
 	/**
@@ -131,9 +131,9 @@ public class DictionaryMainWindow {
 	private void resume(){
 		try {
 			setStatus(local.get("pStatLoading"), true);
-			Dictionary dic = Idle.dic;
+			Dictionary dic = LocalizationHelper.dic;
 			frmDictionaryEditor.setTitle(local.get("gTitle") + ": " + dic.getName());
-			defaultFile = Idle.dict;
+			defaultFile = LocalizationHelper.dict;
 			setDictionary(dic);
 			changed = false;
 			setStatus(local.get("pStatLoaded"), false);
@@ -204,8 +204,8 @@ public class DictionaryMainWindow {
 				if (chooser.showOpenDialog(frmDictionaryEditor) == CostumFileChooser.APPROVE_OPTION) {
 					try {
 						setStatus(local.get("pStatLoading"), true);
-						Idle.dict = chooser.getSelectedFile();
-						Dictionary dic = Dictionary.createFromFile(Idle.dict);
+						LocalizationHelper.dict = chooser.getSelectedFile();
+						Dictionary dic = Dictionary.createFromFile(LocalizationHelper.dict);
 						frmDictionaryEditor.setTitle(local.get("gTitle") + ": " + dic.getName());
 						defaultFile = chooser.getSelectedFile();
 						setDictionary(dic);
@@ -619,7 +619,7 @@ public class DictionaryMainWindow {
 					w.write(langs.getSelectedItem().toString());
 					w.close();
 
-					Idle.dic = dic;
+					LocalizationHelper.dic = dic;
 					/*if(askForSave() && (dic != null)) {
 						try {
 							dic.cleanup();
@@ -627,7 +627,7 @@ public class DictionaryMainWindow {
 							showError(local.get("eCleanupError"), ex);
 						}
 					}*/
-					Idle.restart(frmDictionaryEditor);
+					LocalizationHelper.restart(frmDictionaryEditor);
 				} catch(Exception e1){
 					// I, too, like to live dangerously.
 				}
