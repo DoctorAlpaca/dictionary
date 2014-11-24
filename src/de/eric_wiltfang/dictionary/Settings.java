@@ -1,4 +1,4 @@
-package de.eric_wiltfang.dictionary.local;
+package de.eric_wiltfang.dictionary;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -8,8 +8,6 @@ import javax.swing.table.TableModel;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import de.eric_wiltfang.dictionary.local.Localization;
-
 
 public class EntryTableModel implements TableModel, DictionaryListener {
 	private Dictionary dic;

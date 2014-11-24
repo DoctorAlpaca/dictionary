@@ -13,8 +13,6 @@ import com.jgoodies.forms.factories.FormFactory;
 import de.eric_wiltfang.dictionary.csv.CSVExporterDialog;
 import de.eric_wiltfang.dictionary.csv.CSVImporterDialog;
 import de.eric_wiltfang.dictionary.html.HTMLExporter;
-import de.eric_wiltfang.dictionary.local.Localization;
-import de.eric_wiltfang.dictionary.local.Settings;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;

@@ -15,7 +15,6 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 
 import de.eric_wiltfang.dictionary.*;
-import de.eric_wiltfang.dictionary.local.Localization;
 
 import javax.swing.JCheckBox;
 

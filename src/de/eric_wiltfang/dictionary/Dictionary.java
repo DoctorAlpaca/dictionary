@@ -13,7 +13,6 @@ import java.util.Vector;
 
 import de.eric_wiltfang.dictionary.DictionaryEvent.DictionaryEventType;
 import de.eric_wiltfang.dictionary.Exporter.ExporterSettings;
-import de.eric_wiltfang.dictionary.local.Localization;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;

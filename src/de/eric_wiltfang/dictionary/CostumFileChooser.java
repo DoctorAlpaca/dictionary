@@ -5,8 +5,6 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import de.eric_wiltfang.dictionary.local.Localization;
-
 public class CostumFileChooser extends JFileChooser {
 	private static final long serialVersionUID = -4713194705787991578L;
 
