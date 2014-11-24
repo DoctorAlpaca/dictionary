@@ -189,6 +189,7 @@ public class DictionaryMainWindow {
 				if (chooser.showOpenDialog(frmDictionaryEditor) == CostumFileChooser.APPROVE_OPTION) {
 					try {
 						setStatus(Localization.getInstance().get("pStatLoading"), true);
+						dic = Dictionary.createFromFile(chooser.getSelectedFile());
 						frmDictionaryEditor.setTitle(Localization.getInstance().get("gTitle") + ": " + dic.getName());
 						defaultFile = chooser.getSelectedFile();
 						setDictionary(dic);
