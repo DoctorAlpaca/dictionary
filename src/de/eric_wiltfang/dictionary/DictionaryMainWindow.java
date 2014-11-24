@@ -345,7 +345,7 @@ public class DictionaryMainWindow {
 		JSeparator separator_4 = new JSeparator();
 		mnFile.add(separator_4);
 
-		if(Localization.emergencyMode) mntmPref.setEnabled(false);
+		if(Localization.getLangs().length<1) mntmPref.setEnabled(false);
 		mnFile.add(mntmPref);
 
 		if(pSettings.containsKey("useLast") && pSettings.get("useLast").equals("true")) mntmUseLast.setSelected(true);
