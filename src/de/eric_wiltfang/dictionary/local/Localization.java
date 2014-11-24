@@ -106,7 +106,6 @@ public class Localization extends java.util.HashMap<String, String>{
             if(!name.endsWith(".lang")) continue;
             out.add(name.substring(0,name.lastIndexOf(".")));
         }
-        System.out.println(out.toString());
         return out.toArray(new String[out.size()]);
     }
 }
