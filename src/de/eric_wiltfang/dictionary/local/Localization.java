@@ -16,6 +16,7 @@ import java.util.zip.ZipInputStream;
 public class Localization extends java.util.HashMap<String, String>{
     public static boolean emergencyMode = false;
     public static String d;
+    private static ArrayList<String> languages = new ArrayList<String>();
     public Localization(){
         String OS = System.getProperty("os.name").toLowerCase();
         if(OS.contains("win")) d = System.getenv("AppData") + "/.ewdictionary/"; else {
@@ -38,49 +39,33 @@ public class Localization extends java.util.HashMap<String, String>{
             if(jarl.toString().startsWith("file:")){
                 File dir = new File(jarl.toString().substring(5)+"assets/");
                 File[] files = dir.listFiles();
-                assert files != null;
                 for(File file : files) if(file.isFile() && file.getAbsolutePath().endsWith(".lang")){
                     if(!file.getName().endsWith(".lang")) continue;
-                    if(new File(d + "assets/" + file.getName()).exists()) continue;
-                    BufferedReader r = new BufferedReader(new FileReader(file));
-                    FileWriter w = new FileWriter(d + "assets/" + file.getName());
-                    w.write("");
-                    String line;
-                    while(null != (line = r.readLine())){
-                        w.append(line).append("\n");
-                    }
-                    r.close();
-                    w.close();
+                    languages.add(file.getName().substring(0,file.getName().lastIndexOf(".")));
                 }
             } else {
                 ZipInputStream jar = new ZipInputStream(jarl.openStream());
                 ZipEntry en;
                 while(null != (en = jar.getNextEntry())){
-                    if(!en.getName().startsWith("assets")||!en.getName().endsWith(".lang"))
-                        continue;
-                    String line, f = d + "assets/" + en.getName().substring(en.getName().lastIndexOf("/") + 1);
-                    if(new File(f).exists())
-                        continue;
-                    BufferedReader r = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(en.getName())));
-                    FileWriter w = new FileWriter(f);
-                    while(null != (line = r.readLine())){
-                        w.append(line).append("\n");
-                    }
-                    r.close();
-                    w.close();
+                    if(!en.getName().startsWith("assets")||!en.getName().endsWith(".lang"))  continue;
+                    languages.add(en.getName().substring(0,en.getName().lastIndexOf(".")));
                 }
             }
             BufferedReader r = new BufferedReader(new FileReader(d + "lang.string"));
             String line = r.readLine();
             if(line == null) line = "English"; else line = line.trim();
             r.close();
-            cf = new File(d + "assets/" + line + ".lang");
-            if(!cf.exists()){
-                cf = new File(d + "assets/English.lang");
-                if(!cf.exists()) throw new Exception("");
+
+            if(!languages.contains(line)){
+                cf = new File(d + "assets/" + line + ".lang");
+                if(cf.exists())
+                    r = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("assets/English.lang")));
+                else
+                    r = new BufferedReader(new FileReader(cf.getAbsolutePath()));
+            } else {
+                r = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("assets/"+line+".lang")));
             }
 
-            r = new BufferedReader(new FileReader(cf.getAbsolutePath()));
             String k, l;
             while(null != (l = r.readLine())){
                 l = l.trim();
@@ -114,13 +99,14 @@ public class Localization extends java.util.HashMap<String, String>{
     public static String[] getLangs(){
         File dir = new File(d + "assets/");
         File[] files = dir.listFiles();
-        ArrayList<String> out = new ArrayList<String>();
+        ArrayList<String> out = new ArrayList<String>(languages);
         String name;
         for(File f: files){
             name = f.getName();
             if(!name.endsWith(".lang")) continue;
             out.add(name.substring(0,name.lastIndexOf(".")));
         }
+
         return out.toArray(new String[out.size()]);
     }
 }
