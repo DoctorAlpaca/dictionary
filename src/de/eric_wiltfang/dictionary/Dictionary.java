@@ -227,7 +227,8 @@ public class Dictionary {
 	public Vector<Long> searchID(String key) throws SQLException {
 		PreparedStatement s = connection.prepareStatement(
 			"SELECT entry_id" +
-			"    FROM entry WHERE word like '%'||?||'%' OR definition like '%'||?||'%';");
+			"    FROM entry WHERE word like '%'||?||'%' OR definition like '%'||?||'%'" + 
+			"    ORDER BY word");
 		s.setString(1,  key);
 		s.setString(2,  key);
 		ResultSet result = s.executeQuery();
@@ -241,7 +242,7 @@ public class Dictionary {
 		return ids;
 	}
 	public Vector<Long> getAllIDs() throws SQLException {
-		ResultSet result = connection.createStatement().executeQuery("SELECT entry_id FROM entry");
+		ResultSet result = connection.createStatement().executeQuery("SELECT entry_id FROM entry ORDER BY word");
 		
 		Vector<Long> ids = new Vector<Long>();
 		
