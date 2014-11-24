@@ -13,7 +13,6 @@ import com.jgoodies.forms.factories.FormFactory;
 import de.eric_wiltfang.dictionary.csv.CSVExporterDialog;
 import de.eric_wiltfang.dictionary.csv.CSVImporterDialog;
 import de.eric_wiltfang.dictionary.html.HTMLExporter;
-import de.eric_wiltfang.dictionary.local.LocalizationHelper;
 import de.eric_wiltfang.dictionary.local.Localization;
 import de.eric_wiltfang.dictionary.local.Settings;
 
@@ -28,8 +27,6 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class DictionaryMainWindow {
-
-	public static Localization local;
 	public static Settings pSettings;
 
 	private JFrame frmDictionaryEditor;
@@ -50,9 +47,7 @@ public class DictionaryMainWindow {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		local = new Localization();
 		pSettings = new Settings();
-		LocalizationHelper.argsHolder = args;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -85,7 +80,7 @@ public class DictionaryMainWindow {
 		JPopupMenu popupMenu = new JPopupMenu();
 		addPopup(table, popupMenu);
 		
-		JMenuItem mntmNewEntryRightClick = new JMenuItem(local.get("pNewEntry"));
+		JMenuItem mntmNewEntryRightClick = new JMenuItem(Localization.getInstance().get("pNewEntry"));
 		mntmNewEntryRightClick.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EditEntryWindow window = new EditEntryWindow(dic);
@@ -95,7 +90,7 @@ public class DictionaryMainWindow {
 		popupMenu.add(mntmNewEntryRightClick);
 		needDictionary.add(mntmNewEntryRightClick);
 		
-		JMenuItem mntmEditSelectedRightClick = new JMenuItem(local.get("pEditSel"));
+		JMenuItem mntmEditSelectedRightClick = new JMenuItem(Localization.getInstance().get("pEditSel"));
 		mntmEditSelectedRightClick.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				editSelected();
@@ -104,7 +99,7 @@ public class DictionaryMainWindow {
 		popupMenu.add(mntmEditSelectedRightClick);
 		needDictionary.add(mntmEditSelectedRightClick);
 		
-		JMenuItem mntnDeleteRightClick = new JMenuItem(local.get("pDelSel"));
+		JMenuItem mntnDeleteRightClick = new JMenuItem(Localization.getInstance().get("pDelSel"));
 		mntnDeleteRightClick.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				deleteSelected();
@@ -114,40 +109,21 @@ public class DictionaryMainWindow {
 		needDictionary.add(mntnDeleteRightClick);
 		
 		setComponentEnabled(false);
-		setStatus(local.get("gWelcome"), false);
-
-		if(null != LocalizationHelper.location) frmDictionaryEditor.setLocation(LocalizationHelper.location);
-		if(null != LocalizationHelper.dic) resume();
-		else if(pSettings.containsKey("useLast") && pSettings.get("useLast").equals("true")
+		setStatus(Localization.getInstance().get("gWelcome"), false);
+		
+		if(pSettings.containsKey("useLast") && pSettings.get("useLast").equals("true")
 				&& pSettings.containsKey("lastFile") && new File(pSettings.get("lastFile")).exists()){
 			try {
-				setStatus(local.get("pStatLoading"), true);
+				setStatus(Localization.getInstance().get("pStatLoading"), true);
 				Dictionary dic = Dictionary.createFromFile(new File(pSettings.get("lastFile")));
-				frmDictionaryEditor.setTitle(local.get("gTitle") + ": " + dic.getName());
+				frmDictionaryEditor.setTitle(Localization.getInstance().get("gTitle") + ": " + dic.getName());
 				defaultFile = new File(pSettings.get("lastFile"));
 				setDictionary(dic);
 				changed = false;
-				setStatus(local.get("pStatLoaded"),false);
+				setStatus(Localization.getInstance().get("pStatLoaded"),false);
 			} catch(Exception e){
-				showError(local.get("eStatLoaded"), e);
+				showError(Localization.getInstance().get("eStatLoaded"), e);
 			}
-		}
-	}
-
-	/**
-	 * Re-opens dictionary after restart.
-	 */
-	private void resume(){
-		try {
-			setStatus(local.get("pStatLoading"), true);
-			Dictionary dic = LocalizationHelper.dic;
-			frmDictionaryEditor.setTitle(local.get("gTitle") + ": " + dic.getName());
-			defaultFile = LocalizationHelper.dict;
-			setDictionary(dic);
-			changed = false;
-			setStatus(local.get("pStatLoaded"), false);
-		} catch(Exception e){
-			showError(local.get("eStatLoaded"), e);
 		}
 	}
 
@@ -162,17 +138,17 @@ public class DictionaryMainWindow {
 				quit();
 			}
 		});
-		frmDictionaryEditor.setTitle(local.get("gTitle"));
+		frmDictionaryEditor.setTitle(Localization.getInstance().get("gTitle"));
 		frmDictionaryEditor.setBounds(100, 100, 535, 468);
 		frmDictionaryEditor.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmDictionaryEditor.setJMenuBar(menuBar);
 		
-		JMenu mnFile = new JMenu(local.get("pFile"));
+		JMenu mnFile = new JMenu(Localization.getInstance().get("pFile"));
 		menuBar.add(mnFile);
 		
-		JMenuItem mntmNew = new JMenuItem(local.get("pNew"));
+		JMenuItem mntmNew = new JMenuItem(Localization.getInstance().get("pNew"));
 		mntmNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!askForSave()) {
@@ -185,13 +161,13 @@ public class DictionaryMainWindow {
 					try {
 						Dictionary dic = Dictionary.createNew(dialog.getSettings());
 						setDictionary(dic);
-						setStatus(local.get("pStatCreated"), false);
+						setStatus(Localization.getInstance().get("pStatCreated"), false);
 						
 						changed = true;
 					} catch (Exception ex) {
-						showError(local.get("eStatCreated"), ex);
+						showError(Localization.getInstance().get("eStatCreated"), ex);
 					}
-					frmDictionaryEditor.setTitle(local.get("gTitle") + ": " + dic.getName());
+					frmDictionaryEditor.setTitle(Localization.getInstance().get("gTitle") + ": " + dic.getName());
 					defaultFile = null;
 				}
 			}
@@ -206,24 +182,22 @@ public class DictionaryMainWindow {
 				}
 				
 				CostumFileChooser chooser = new CostumFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(local.get("dFilterName"), "dict");
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(Localization.getInstance().get("dFilterName"), "dict");
 				chooser.setFileFilter(filter);
 				chooser.setDialogType(JFileChooser.OPEN_DIALOG);
 				
 				if (chooser.showOpenDialog(frmDictionaryEditor) == CostumFileChooser.APPROVE_OPTION) {
 					try {
-						setStatus(local.get("pStatLoading"), true);
-						LocalizationHelper.dict = chooser.getSelectedFile();
-						Dictionary dic = Dictionary.createFromFile(LocalizationHelper.dict);
-						frmDictionaryEditor.setTitle(local.get("gTitle") + ": " + dic.getName());
+						setStatus(Localization.getInstance().get("pStatLoading"), true);
+						frmDictionaryEditor.setTitle(Localization.getInstance().get("gTitle") + ": " + dic.getName());
 						defaultFile = chooser.getSelectedFile();
 						setDictionary(dic);
 						changed = false;
-						setStatus(local.get("pStatLoaded"), false);
+						setStatus(Localization.getInstance().get("pStatLoaded"), false);
 						pSettings.put("lastFile",chooser.getSelectedFile().getAbsolutePath());
 						pSettings.write();
 					} catch (Exception ex) {
-						showError(local.get("eStatLoaded"), ex);
+						showError(Localization.getInstance().get("eStatLoaded"), ex);
 					}
 				}
 			}
@@ -231,7 +205,7 @@ public class DictionaryMainWindow {
 		mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		mnFile.add(mntmOpen);
 		
-		JMenuItem mntmSave = new JMenuItem(local.get("pSave"));
+		JMenuItem mntmSave = new JMenuItem(Localization.getInstance().get("pSave"));
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				save();
@@ -241,7 +215,7 @@ public class DictionaryMainWindow {
 		mnFile.add(mntmSave);
 		needDictionary.add(mntmSave);
 		
-		JMenuItem mntmSaveAs = new JMenuItem(local.get("pSaveAs"));
+		JMenuItem mntmSaveAs = new JMenuItem(Localization.getInstance().get("pSaveAs"));
 		mntmSaveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				File temp = defaultFile;
@@ -259,10 +233,10 @@ public class DictionaryMainWindow {
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
 		
-		JMenu mnImport = new JMenu(local.get("pImport"));
+		JMenu mnImport = new JMenu(Localization.getInstance().get("pImport"));
 		mnFile.add(mnImport);
 		
-		JMenuItem mntmCSVImport = new JMenuItem(local.get("dCSVFilter"));
+		JMenuItem mntmCSVImport = new JMenuItem(Localization.getInstance().get("dCSVFilter"));
 		mntmCSVImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				CSVImporterDialog importer = new CSVImporterDialog(dic);
@@ -272,11 +246,11 @@ public class DictionaryMainWindow {
 		mnImport.add(mntmCSVImport);
 		needDictionary.add(mntmCSVImport);
 		
-		JMenu mnExportAs = new JMenu(local.get("pExport"));
+		JMenu mnExportAs = new JMenu(Localization.getInstance().get("pExport"));
 		mnFile.add(mnExportAs);
 		needDictionary.add(mnExportAs);
 		
-		JMenuItem mntmCSVExport = new JMenuItem(local.get("dCSVFilter"));
+		JMenuItem mntmCSVExport = new JMenuItem(Localization.getInstance().get("dCSVFilter"));
 		mntmCSVExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CSVExporterDialog dialog = new CSVExporterDialog(dic);
@@ -286,11 +260,11 @@ public class DictionaryMainWindow {
 		mnExportAs.add(mntmCSVExport);
 		needDictionary.add(mntmCSVExport);
 		
-		JMenuItem mntmWebDictionaryhtml = new JMenuItem(local.get("dWebFilter"));
+		JMenuItem mntmWebDictionaryhtml = new JMenuItem(Localization.getInstance().get("dWebFilter"));
 		mntmWebDictionaryhtml.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CostumFileChooser chooser = new CostumFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(local.get("dWebpageName"), "html", "htm");
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(Localization.getInstance().get("dWebpageName"), "html", "htm");
 				chooser.setFileFilter(filter);
 				if (!dic.getName().isEmpty()) {
 					chooser.setSelectedFile(new File(dic.getName() + ".html"));
@@ -302,7 +276,7 @@ public class DictionaryMainWindow {
 						HTMLExporter exp = new HTMLExporter(f);
 						dic.export(exp);
 					} catch (Exception ex) {
-						ErrorDialog.showError(local.get("eExportError"), ex);
+						ErrorDialog.showError(Localization.getInstance().get("eExportError"), ex);
 					}
 				} else {
 					return;
@@ -312,22 +286,14 @@ public class DictionaryMainWindow {
 		mnExportAs.add(mntmWebDictionaryhtml);
 		needDictionary.add(mntmWebDictionaryhtml);
 		
-		JMenuItem mntmQuit = new JMenuItem(local.get("pQuit"));
+		JMenuItem mntmQuit = new JMenuItem(Localization.getInstance().get("pQuit"));
 		mntmQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				quit();
 			}
 		});
 
-		JMenuItem mntmPref = new JMenuItem(local.get("pPrefs"));
-		mntmPref.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent actionEvent){
-				showPreferences();
-			}
-		});
-
-		final JCheckBoxMenuItem mntmUseLast = new JCheckBoxMenuItem(local.get("pUseLast"));
+		final JCheckBoxMenuItem mntmUseLast = new JCheckBoxMenuItem(Localization.getInstance().get("pUseLast"));
 		mntmUseLast.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e){
@@ -345,9 +311,6 @@ public class DictionaryMainWindow {
 		JSeparator separator_4 = new JSeparator();
 		mnFile.add(separator_4);
 
-		if(local.getLangs().length<1) mntmPref.setEnabled(false);
-		mnFile.add(mntmPref);
-
 		if(pSettings.containsKey("useLast") && pSettings.get("useLast").equals("true")) mntmUseLast.setSelected(true);
 		mnFile.add(mntmUseLast);
 
@@ -356,17 +319,17 @@ public class DictionaryMainWindow {
 		mntmQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		mnFile.add(mntmQuit);
 		
-		JMenu mnEdit = new JMenu(local.get("pEdit"));
+		JMenu mnEdit = new JMenu(Localization.getInstance().get("pEdit"));
 		menuBar.add(mnEdit);
 		
-		JMenuItem mntmDeleteSelected = new JMenuItem(local.get("pDelSel"));
+		JMenuItem mntmDeleteSelected = new JMenuItem(Localization.getInstance().get("pDelSel"));
 		mntmDeleteSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				deleteSelected();
 			}
 		});
 		
-		JMenuItem mntmNewEntry = new JMenuItem(local.get("pNewEntry"));
+		JMenuItem mntmNewEntry = new JMenuItem(Localization.getInstance().get("pNewEntry"));
 		mntmNewEntry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EditEntryWindow window = new EditEntryWindow(dic);
@@ -377,7 +340,7 @@ public class DictionaryMainWindow {
 		mnEdit.add(mntmNewEntry);
 		needDictionary.add(mntmNewEntry);
 		
-		JMenuItem mntmMultipleNewEntries = new JMenuItem(local.get("pMultNew"));
+		JMenuItem mntmMultipleNewEntries = new JMenuItem(Localization.getInstance().get("pMultNew"));
 		mntmMultipleNewEntries.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EditEntryWindow window = new EditEntryWindow(dic);
@@ -392,7 +355,7 @@ public class DictionaryMainWindow {
 		JSeparator separator_3 = new JSeparator();
 		mnEdit.add(separator_3);
 		
-		JMenuItem mntmEditSelected = new JMenuItem(local.get("pEditSel"));
+		JMenuItem mntmEditSelected = new JMenuItem(Localization.getInstance().get("pEditSel"));
 		mntmEditSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				editSelected();
@@ -408,7 +371,7 @@ public class DictionaryMainWindow {
 		JSeparator separator_2 = new JSeparator();
 		mnEdit.add(separator_2);
 		
-		JMenuItem mntmEditDictionarySettings = new JMenuItem(local.get("pEdDictSet"));
+		JMenuItem mntmEditDictionarySettings = new JMenuItem(Localization.getInstance().get("pEdDictSet"));
 		mntmEditDictionarySettings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EditDictionarySettingsDialog edsd = new EditDictionarySettingsDialog(dic.getSettings());
@@ -417,7 +380,7 @@ public class DictionaryMainWindow {
 					dic.setSettings(edsd.getSettings());
 				}
 				
-				frmDictionaryEditor.setTitle(local.get("gDict") + ": " + dic.getName());
+				frmDictionaryEditor.setTitle(Localization.getInstance().get("gDict") + ": " + dic.getName());
 				changed = true;
 			}
 		});
@@ -438,7 +401,7 @@ public class DictionaryMainWindow {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblSearch = new JLabel(local.get("pSearch"));
+		JLabel lblSearch = new JLabel(Localization.getInstance().get("pSearch"));
 		frmDictionaryEditor.getContentPane().add(lblSearch, "2, 2, right, default");
 		
 		searchField = new JTextField();
@@ -449,7 +412,7 @@ public class DictionaryMainWindow {
 					try {
 						model.searchFor(key);
 					} catch (SQLException ex) {
-						showError(local.get("eInternalError"), ex);
+						showError(Localization.getInstance().get("eInternalError"), ex);
 					}
 				}
 			}
@@ -505,7 +468,7 @@ public class DictionaryMainWindow {
 			new RowSpec[] {
 				RowSpec.decode("14px"),}));
 		
-		lblStatuslabel = new JLabel(local.get("xStatusLabel"));
+		lblStatuslabel = new JLabel(Localization.getInstance().get("xStatusLabel"));
 		panel.add(lblStatuslabel, "2, 1, left, top");
 		
 		progressBar = new JProgressBar();
@@ -516,7 +479,7 @@ public class DictionaryMainWindow {
 		panel.add(lblEntries, "6, 1, right, center");
 		model.addTableModelListener(new TableModelListener() {
 			public void tableChanged(TableModelEvent e) {
-				lblEntries.setText(((EntryTableModel)e.getSource()).getRowCount() + " " + local.get("sEntries"));
+				lblEntries.setText(((EntryTableModel)e.getSource()).getRowCount() + " " + Localization.getInstance().get("sEntries"));
 			}
 		});
 	}
@@ -546,13 +509,13 @@ public class DictionaryMainWindow {
 				switch (event.getType()) {
 				case OTHER:
 				case UPDATE:
-					setStatus(local.get("pStatEditedDict"), false);
+					setStatus(Localization.getInstance().get("pStatEditedDict"), false);
 					break;
 				case DELETE:
-					setStatus(local.get("pStatDelEntry"), false);
+					setStatus(Localization.getInstance().get("pStatDelEntry"), false);
 					break;
 				case NEW:
-					setStatus(local.get("pStatAddEntry"), false);
+					setStatus(Localization.getInstance().get("pStatAddEntry"), false);
 					break;
 				}
 			}
@@ -569,12 +532,12 @@ public class DictionaryMainWindow {
 		try {
 			model.setDictionary(dic);
 		} catch (Exception ex) {
-			showError(local.get("eInternalError"), ex);
+			showError(Localization.getInstance().get("eInternalError"), ex);
 		}
 		try {
 			model.searchFor(searchField.getText());
 		} catch (Exception ex) {
-			showError(local.get("eInternalError"), ex);
+			showError(Localization.getInstance().get("eInternalError"), ex);
 		}
 	}
 	
@@ -590,7 +553,7 @@ public class DictionaryMainWindow {
 		return ids;
 	}
 	private void deleteSelected() {
-		if (JOptionPane.showConfirmDialog(frmDictionaryEditor, local.get("dConfDelete")) != JOptionPane.OK_OPTION) {
+		if (JOptionPane.showConfirmDialog(frmDictionaryEditor, Localization.getInstance().get("dConfDelete")) != JOptionPane.OK_OPTION) {
 			return;
 		}
 		try {
@@ -598,13 +561,13 @@ public class DictionaryMainWindow {
 				dic.deleteEntry(id);
 			}
 		} catch (Exception ex) {
-			showError(local.get("eDeleteError"), ex);
+			showError(Localization.getInstance().get("eDeleteError"), ex);
 		}
 	}
 	private void editSelected() {
 		if (table.getSelectedRowCount() > 10) {
-			if (JOptionPane.showConfirmDialog(frmDictionaryEditor, local.get("dConfMult1")+ " " + table.getSelectedRowCount() +
-					" " + local.get("dConfMult2"), local.get("dMassEdit"),
+			if (JOptionPane.showConfirmDialog(frmDictionaryEditor, Localization.getInstance().get("dConfMult1")+ " " + table.getSelectedRowCount() +
+					" " + Localization.getInstance().get("dConfMult2"), Localization.getInstance().get("dMassEdit"),
 					JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
 				return;
 			}
@@ -615,69 +578,9 @@ public class DictionaryMainWindow {
 				editWindow.setVisible(true);
 			}
 		} catch (Exception ex) {
-			showError(local.get("eInternalError"), ex);
+			showError(Localization.getInstance().get("eInternalError"), ex);
 		}
-	}
 
-	private void showPreferences() {
-		final JDialog choose = new JDialog(frmDictionaryEditor, local.get("pPrefs"), Dialog.ModalityType.APPLICATION_MODAL);
-		choose.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-		GridBagLayout lay = new GridBagLayout();
-		GridBagConstraints c = new GridBagConstraints();
-		Container pane = choose.getContentPane();
-		pane.setLayout(lay);
-
-		JLabel label = new JLabel(local.get("sChooseLang"));
-		final JComboBox<String> langs = new JComboBox<String>(local.getLangs());
-		JButton cancel = new JButton(local.get("dCancel")),
-				accept = new JButton(local.get("dAccept"));
-
-		cancel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e){
-				choose.setVisible(false);
-			}
-		});
-
-		accept.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e){
-				try {
-					FileWriter w = new FileWriter(Localization.d + "lang.string");
-					w.write(langs.getSelectedItem().toString());
-					w.close();
-
-					LocalizationHelper.dic = dic;
-					LocalizationHelper.restart(frmDictionaryEditor);
-				} catch(Exception e1){
-					// I, too, like to live dangerously.
-				}
-			}
-		});
-
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 3;
-		c.insets = new Insets(12,12,4,12);
-		pane.add(label, c);
-		c.gridy = 1;
-		c.insets = new Insets(4,12,1,12);
-		pane.add(langs, c);
-		c.gridy = 2;
-		c.gridwidth = 1;
-		c.insets = new Insets(5,12,12,1);
-		pane.add(cancel, c);
-		c.gridx = 1;
-		c.gridwidth = 2;
-		c.insets = new Insets(5,1,12,12);
-		pane.add(accept, c);
-
-		choose.pack();
-		choose.setLocationRelativeTo(null);
-
-		choose.setVisible(true);
 	}
 
 	private void quit() {
@@ -689,7 +592,7 @@ public class DictionaryMainWindow {
 			try {
 				dic.cleanup();
 			} catch (IOException ex) {
-				showError(local.get("eCleanupError"), ex);
+				showError(Localization.getInstance().get("eCleanupError"), ex);
 			}
 		}
 		try {
@@ -705,7 +608,7 @@ public class DictionaryMainWindow {
 	 */
 	private boolean askForSave() {
 		if (changed) {
-			int answer = JOptionPane.showConfirmDialog(frmDictionaryEditor, local.get("dConfSaveL"), local.get("dConfSaveS"), JOptionPane.YES_NO_CANCEL_OPTION);
+			int answer = JOptionPane.showConfirmDialog(frmDictionaryEditor, Localization.getInstance().get("dConfSaveL"), Localization.getInstance().get("dConfSaveS"), JOptionPane.YES_NO_CANCEL_OPTION);
 			
 			switch (answer) {
 			case JOptionPane.YES_OPTION:
@@ -730,7 +633,7 @@ public class DictionaryMainWindow {
 		File f;
 		if (defaultFile == null) {
 			CostumFileChooser chooser = new CostumFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter(local.get("dFilterName"), "dict");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(Localization.getInstance().get("dFilterName"), "dict");
 			chooser.setFileFilter(filter);
 			chooser.setSelectedFile(new File(dic.getName() + ".dict"));
 			chooser.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -748,12 +651,12 @@ public class DictionaryMainWindow {
 			setStatus("Saving", true);
 			dic.save(f);
 			defaultFile = f;
-			setStatus(local.get("pStatSaved"), false);
+			setStatus(Localization.getInstance().get("pStatSaved"), false);
 			
 			changed = false;
 			return true;
 		} catch (Exception ex) {
-			showError(local.get("eSaveError"), ex);
+			showError(Localization.getInstance().get("eSaveError"), ex);
 			return false;
 		}
 	}

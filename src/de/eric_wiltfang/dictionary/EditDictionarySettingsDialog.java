@@ -13,6 +13,8 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 
+import de.eric_wiltfang.dictionary.local.Localization;
+
 import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
@@ -40,7 +42,7 @@ public class EditDictionarySettingsDialog extends JDialog {
 	private void showDialog(DictionarySettings settings) {
 		setModal(true);
 		setResizable(false);
-		setTitle(DictionaryMainWindow.local.get("pStateCreate"));
+		setTitle(Localization.getInstance().get("pStateCreate"));
 		setBounds(100, 100, 400, 115);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -54,7 +56,7 @@ public class EditDictionarySettingsDialog extends JDialog {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		{
-			JLabel lblLanguageName = new JLabel(DictionaryMainWindow.local.get("pLangName") + " ");
+			JLabel lblLanguageName = new JLabel(Localization.getInstance().get("pLangName") + " ");
 			contentPanel.add(lblLanguageName, "2, 2, right, default");
 		}
 		{
@@ -68,7 +70,7 @@ public class EditDictionarySettingsDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton(DictionaryMainWindow.local.get("dOK"));
+				JButton okButton = new JButton(Localization.getInstance().get("dOK"));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						confirmed = true;
@@ -76,12 +78,12 @@ public class EditDictionarySettingsDialog extends JDialog {
 						dispose();
 					}
 				});
-				okButton.setActionCommand(DictionaryMainWindow.local.get("dOK"));
+				okButton.setActionCommand(Localization.getInstance().get("dOK"));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton(DictionaryMainWindow.local.get("dCancel"));
+				JButton cancelButton = new JButton(Localization.getInstance().get("dCancel"));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						confirmed = false;
@@ -89,7 +91,7 @@ public class EditDictionarySettingsDialog extends JDialog {
 						dispose();
 					}
 				});
-				cancelButton.setActionCommand(DictionaryMainWindow.local.get("dCancel"));
+				cancelButton.setActionCommand(Localization.getInstance().get("dCancel"));
 				buttonPane.add(cancelButton);
 			}
 		}

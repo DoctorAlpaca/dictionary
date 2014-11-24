@@ -8,6 +8,8 @@ import javax.swing.table.TableModel;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import de.eric_wiltfang.dictionary.local.Localization;
+
 
 public class EntryTableModel implements TableModel, DictionaryListener {
 	private Dictionary dic;
@@ -76,10 +78,10 @@ public class EntryTableModel implements TableModel, DictionaryListener {
 	@Override
 	public String getColumnName(int col) {
 		switch (col) {
-		case 0: return DictionaryMainWindow.local.get("sWCName");
-		case 1: return DictionaryMainWindow.local.get("sDCName");
-		case 2: return DictionaryMainWindow.local.get("sCCName");
-		case 3: return DictionaryMainWindow.local.get("sCTName");
+		case 0: return Localization.getInstance().get("sWCName");
+		case 1: return Localization.getInstance().get("sDCName");
+		case 2: return Localization.getInstance().get("sCCName");
+		case 3: return Localization.getInstance().get("sNCName");
 		default:
 			return null;
 		}
@@ -96,7 +98,7 @@ public class EntryTableModel implements TableModel, DictionaryListener {
 		try {
 			entry = dic.getEntry(ids.get(row));
 		} catch (Exception ex) {
-			return DictionaryMainWindow.local.get("sErr") + " " + ex;
+			return Localization.getInstance().get("sErr") + " " + ex;
 		}
 		switch(col) {
 		case 0:
