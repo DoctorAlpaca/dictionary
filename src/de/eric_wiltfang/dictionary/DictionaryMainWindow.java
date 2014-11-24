@@ -345,7 +345,7 @@ public class DictionaryMainWindow {
 		JSeparator separator_4 = new JSeparator();
 		mnFile.add(separator_4);
 
-		if(Localization.emergencyMode) mntmPref.setEnabled(false);
+		if(local.getLangs().length<1) mntmPref.setEnabled(false);
 		mnFile.add(mntmPref);
 
 		if(pSettings.containsKey("useLast") && pSettings.get("useLast").equals("true")) mntmUseLast.setSelected(true);
@@ -629,7 +629,7 @@ public class DictionaryMainWindow {
 		pane.setLayout(lay);
 
 		JLabel label = new JLabel(local.get("sChooseLang"));
-		final JComboBox<String> langs = new JComboBox<String>(Localization.getLangs());
+		final JComboBox<String> langs = new JComboBox<String>(local.getLangs());
 		JButton cancel = new JButton(local.get("dCancel")),
 				accept = new JButton(local.get("dAccept"));
 

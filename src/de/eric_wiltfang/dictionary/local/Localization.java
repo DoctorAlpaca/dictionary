@@ -16,7 +16,7 @@ import java.util.zip.ZipInputStream;
 public class Localization extends java.util.HashMap<String, String>{
     public static boolean emergencyMode = false;
     public static String d;
-    private static ArrayList<String> languages = new ArrayList<String>();
+    private ArrayList<String> languages = new ArrayList<String>();
     public Localization(){
         String OS = System.getProperty("os.name").toLowerCase();
         if(OS.contains("win")) d = System.getenv("AppData") + "/.ewdictionary/"; else {
@@ -96,7 +96,7 @@ public class Localization extends java.util.HashMap<String, String>{
             }
         }
     }
-    public static String[] getLangs(){
+    public String[] getLangs(){
         File dir = new File(d + "assets/");
         File[] files = dir.listFiles();
         ArrayList<String> out = new ArrayList<String>(languages);
@@ -106,7 +106,6 @@ public class Localization extends java.util.HashMap<String, String>{
             if(!name.endsWith(".lang")) continue;
             out.add(name.substring(0,name.lastIndexOf(".")));
         }
-
         return out.toArray(new String[out.size()]);
     }
 }
