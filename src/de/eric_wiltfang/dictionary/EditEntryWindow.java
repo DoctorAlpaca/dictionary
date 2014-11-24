@@ -106,7 +106,7 @@ public class EditEntryWindow {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.LINE_GAP_ROWSPEC,}));
 		
-		JLabel lblWord = new JLabel(Localization.getInstance().get("sWCName"));
+		JLabel lblWord = new JLabel(Localization.getInstance().get("wordColumnName"));
 		lblWord.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblWord, "2, 2, right, default");
 		frame.addComponentListener(new ComponentAdapter() {
@@ -127,7 +127,7 @@ public class EditEntryWindow {
 		wordTextField.setColumns(10);
 		wordTextField.addKeyListener(keyAdapter);
 		
-		JLabel lblDefinition = new JLabel(Localization.getInstance().get("sDCName"));
+		JLabel lblDefinition = new JLabel(Localization.getInstance().get("definitionColumnName"));
 		lblDefinition.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblDefinition, "2, 4");
 		
@@ -150,7 +150,7 @@ public class EditEntryWindow {
 		});
 		defTextArea.addKeyListener(keyAdapter);
 		
-		JLabel lblNotes = new JLabel(Localization.getInstance().get("sNCName"));
+		JLabel lblNotes = new JLabel(Localization.getInstance().get("notesColumnName"));
 		lblNotes.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblNotes, "2, 6");
 		
@@ -173,7 +173,7 @@ public class EditEntryWindow {
 		});
 		notesTextArea.addKeyListener(keyAdapter);
 		
-		JLabel lblCategory = new JLabel(Localization.getInstance().get("sCCName"));
+		JLabel lblCategory = new JLabel(Localization.getInstance().get("categoryColumnName"));
 		lblCategory.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblCategory, "2, 8, right, default");
 		
@@ -182,7 +182,7 @@ public class EditEntryWindow {
 		catTextField.setColumns(10);
 		catTextField.addKeyListener(keyAdapter);
 		
-		JLabel lblTags = new JLabel(Localization.getInstance().get("sTCName"));
+		JLabel lblTags = new JLabel(Localization.getInstance().get("tagsColumnName"));
 		lblTags.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblTags, "2, 10, right, default");
 		
@@ -191,7 +191,7 @@ public class EditEntryWindow {
 		tagsTextField.setColumns(10);
 		tagsTextField.addKeyListener(keyAdapter);
 		
-		btnSave = new JButton(Localization.getInstance().get("pSave"));
+		btnSave = new JButton(Localization.getInstance().get("menuItemFileSave"));
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveEntry();
@@ -199,7 +199,7 @@ public class EditEntryWindow {
 		});
 		frame.getContentPane().add(btnSave, "4, 12");
 		
-		btnCancel = new JButton(Localization.getInstance().get("dCancel"));
+		btnCancel = new JButton(Localization.getInstance().get("cancel"));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Maybe ask for saving?
@@ -242,7 +242,7 @@ public class EditEntryWindow {
 			updateEntry();
 			dic.insertEntry(entry);
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(frame, Localization.getInstance().get("eSave") + " " + ex, Localization.getInstance().get("eSaveS"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(frame, Localization.getInstance().get("fileSaveErrorMessage") + " " + ex, Localization.getInstance().get("fileSaveErrorTitle"), JOptionPane.ERROR_MESSAGE);
 		}
 		
 		if (newEntryOnSave) {
@@ -262,11 +262,11 @@ public class EditEntryWindow {
 	public void setNewEntryOnSave(boolean b) {
 		newEntryOnSave = b;
 		if (b) {
-			btnSave.setText(Localization.getInstance().get("dSaveNext"));
-			btnCancel.setText(Localization.getInstance().get("dSaveStop"));
+			btnSave.setText(Localization.getInstance().get("entryEditSaveAndContinue"));
+			btnCancel.setText(Localization.getInstance().get("entryEditStopEntry"));
 		} else {
-			btnSave.setText(Localization.getInstance().get("pSave"));
-			btnCancel.setText(Localization.getInstance().get("dCancel"));
+			btnSave.setText(Localization.getInstance().get("menuItemFileSave"));
+			btnCancel.setText(Localization.getInstance().get("cancel"));
 		}
 	}
 }

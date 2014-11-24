@@ -12,7 +12,7 @@ public class CostumFileChooser extends JFileChooser {
 	public void approveSelection(){
 	    File f = getSelectedFile();
 	    if(f.exists() && getDialogType() == SAVE_DIALOG){
-	        int result = JOptionPane.showConfirmDialog(this, Localization.getInstance().get("dConfOverwrite"), Localization.getInstance().get("dConfOverS"), JOptionPane.YES_NO_CANCEL_OPTION);
+	        int result = JOptionPane.showConfirmDialog(this, Localization.getInstance().get("messageConfirmOverwrite"), Localization.getInstance().get("messageConfirmOverwriteTitle"), JOptionPane.YES_NO_CANCEL_OPTION);
 			switch(result){
 			case JOptionPane.YES_OPTION:
 				super.approveSelection();

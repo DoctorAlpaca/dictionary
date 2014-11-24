@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.sql.*;
+import java.text.MessageFormat;
 import java.util.EnumSet;
 import java.util.Vector;
 
@@ -30,7 +31,7 @@ public class Dictionary {
 		try {
 			workingDirectory = Files.createTempDirectory("dict");
 		} catch (IOException e) {
-			throw new IOException(Localization.getInstance().get("eTempFail") + " " + e);
+			throw new IOException(Localization.getInstance().get("temporaryFolderError") + " " + e);
 		}
 	}
 	/** 
@@ -49,7 +50,7 @@ public class Dictionary {
 
 			workingDirectory.toFile().delete();
 		} catch(Exception e) {
-			throw new IOException(Localization.getInstance().get("eCleanupFail") + " " + e);
+			throw new IOException(Localization.getInstance().get("cleanupExceptionMessage") + " " + e);
 		}
 	}
 
@@ -57,7 +58,7 @@ public class Dictionary {
 		try {
 			connection = DriverManager.getConnection("jdbc:h2:" + workingDirectory + "/db", "sa", "");
 		} catch (SQLException e) {
-			throw new IOException(Localization.getInstance().get("eDBConFail") + " " + e);
+			throw new IOException(Localization.getInstance().get("databaseConnectionExceptionMessage") + " " + e);
 		}
 	}
 	private void init() throws IOException, SQLException {
@@ -86,7 +87,7 @@ public class Dictionary {
 			
 			connectDatabase();
 		} catch(Exception e) {
-			throw new IOException(Localization.getInstance().get("eFileFail") + " " + e);
+			throw new IOException(Localization.getInstance().get("fileReadExceptionMessage") + " " + e);
 		}
 	}
 	/**
@@ -96,13 +97,13 @@ public class Dictionary {
 		try {
 			connection.close();
 		} catch(Exception e) {
-			throw new Exception(Localization.getInstance().get("eReleaseFail") + " " + e);
+			throw new Exception(Localization.getInstance().get("databaseReleaseExceptionMessage") + " " + e);
 		}
 		if (Files.exists(target.toPath())) {
 			try {
 				Files.delete(target.toPath());
 			} catch (IOException e) {
-				throw new IOException(Localization.getInstance().get("eSaveFail1") + " " + target + Localization.getInstance().get("eSaveFail2")+ " " + e);
+				throw new IOException(MessageFormat.format(Localization.getInstance().get("fileExistsExceptionMessage"), target) + e);
 			}
 		}
 		try {
@@ -126,7 +127,7 @@ public class Dictionary {
 				zip.addFile(f, parameters);
 			}
 		} catch (Exception e) {
-			throw new IOException(Localization.getInstance().get("eSaveFailS") + " " + e);
+			throw new IOException(Localization.getInstance().get("fileSaveExceptionMessage") + " " + e);
 		}
 		connectDatabase();
 	}

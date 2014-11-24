@@ -62,7 +62,7 @@ public class CSVExporterDialog extends JDialog {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		{
-			chckbxAddColumnHeaders = new JCheckBox(Localization.getInstance().get("pAddCollH"));
+			chckbxAddColumnHeaders = new JCheckBox(Localization.getInstance().get("csvExportAddHeader"));
 			contentPanel.add(chckbxAddColumnHeaders, "2, 2");
 		}
 		{
@@ -70,11 +70,11 @@ public class CSVExporterDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton(Localization.getInstance().get("dExport"));
+				JButton okButton = new JButton(Localization.getInstance().get("export"));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						CostumFileChooser chooser = new CostumFileChooser();
-						FileNameExtensionFilter filter = new FileNameExtensionFilter(Localization.getInstance().get("dCSVFilter2"), "csv");
+						FileNameExtensionFilter filter = new FileNameExtensionFilter(Localization.getInstance().get("csvFiletypeFilterName"), "csv");
 						chooser.setFileFilter(filter);
 						if (!dic.getName().isEmpty()) {
 							chooser.setSelectedFile(new File(dic.getName() + ".csv"));
@@ -90,26 +90,26 @@ public class CSVExporterDialog extends JDialog {
 								setVisible(false);
 								dispose();
 							} catch (Exception ex) {
-								ErrorDialog.showError(Localization.getInstance().get("eStatExport"), ex);
+								ErrorDialog.showError(Localization.getInstance().get("exportErrorMessage"), ex);
 							}
 						} else {
 							return;
 						}
 					}
 				});
-				okButton.setActionCommand(Localization.getInstance().get("dOK"));
+				okButton.setActionCommand(Localization.getInstance().get("ok"));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton(Localization.getInstance().get("dCancel"));
+				JButton cancelButton = new JButton(Localization.getInstance().get("cancel"));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
 						dispose();
 					}
 				});
-				cancelButton.setActionCommand(Localization.getInstance().get("dCancel"));
+				cancelButton.setActionCommand(Localization.getInstance().get("cancel"));
 				buttonPane.add(cancelButton);
 			}
 		}

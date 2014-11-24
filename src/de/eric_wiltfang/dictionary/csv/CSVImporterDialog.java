@@ -113,7 +113,7 @@ public class CSVImporterDialog extends JDialog {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("default:grow"),}));
 		{
-			JLabel lblFile = new JLabel(Localization.getInstance().get("sFile"));
+			JLabel lblFile = new JLabel(Localization.getInstance().get("csvImportFile"));
 			contentPanel.add(lblFile, "2, 2, right, default");
 		}
 		{
@@ -128,10 +128,10 @@ public class CSVImporterDialog extends JDialog {
 				public void actionPerformed(ActionEvent arg0) {
 					CostumFileChooser chooser = new CostumFileChooser();
 					chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-					FileNameExtensionFilter filter = new FileNameExtensionFilter(Localization.getInstance().get("dCSVFilter2"), "csv");
+					FileNameExtensionFilter filter = new FileNameExtensionFilter(Localization.getInstance().get("csvFiletypeFilterName"), "csv");
 					chooser.setFileFilter(filter);
 					
-					if (chooser.showDialog(contentPanel, Localization.getInstance().get("dSelectFile")) == JFileChooser.APPROVE_OPTION) {
+					if (chooser.showDialog(contentPanel, Localization.getInstance().get("buttonSelectImportFile")) == JFileChooser.APPROVE_OPTION) {
 						file = chooser.getSelectedFile();
 						txtFilename.setText(file.toString());
 						okButton.setEnabled(false);
@@ -169,12 +169,12 @@ public class CSVImporterDialog extends JDialog {
 					FormFactory.RELATED_GAP_ROWSPEC,
 					FormFactory.DEFAULT_ROWSPEC,}));
 			{
-				chckbxFirstRowContains = new JCheckBox(Localization.getInstance().get("sFirstLabels"));
+				chckbxFirstRowContains = new JCheckBox(Localization.getInstance().get("csvImportLabelRow"));
 				chckbxFirstRowContains.addChangeListener(resetOk);
 				panel.add(chckbxFirstRowContains, "2, 2, 3, 1");
 			}
 			{
-				JLabel lblWordColumn = new JLabel(Localization.getInstance().get("sWordCol"));
+				JLabel lblWordColumn = new JLabel(Localization.getInstance().get("csvImportWordColumn"));
 				panel.add(lblWordColumn, "2, 4, right, default");
 			}
 			{
@@ -184,7 +184,7 @@ public class CSVImporterDialog extends JDialog {
 				panel.add(spinnerWord, "4, 4, fill, default");
 			}
 			{
-				JLabel lblDefinitionColumn = new JLabel(Localization.getInstance().get("sDefCol"));
+				JLabel lblDefinitionColumn = new JLabel(Localization.getInstance().get("csvImportDefinitionColumn"));
 				panel.add(lblDefinitionColumn, "2, 6, right, default");
 			}
 			{
@@ -194,7 +194,7 @@ public class CSVImporterDialog extends JDialog {
 				panel.add(spinnerDefinition, "4, 6, fill, default");
 			}
 			{
-				JLabel lblCategoryColumn = new JLabel(Localization.getInstance().get("sCatCol"));
+				JLabel lblCategoryColumn = new JLabel(Localization.getInstance().get("csvImportCategoryColumn"));
 				panel.add(lblCategoryColumn, "2, 8, right, default");
 			}
 			{
@@ -204,7 +204,7 @@ public class CSVImporterDialog extends JDialog {
 				panel.add(spinnerCategory, "4, 8, fill, default");
 			}
 			{
-				JLabel lblTagColumns = new JLabel(Localization.getInstance().get("sTagCols"));
+				JLabel lblTagColumns = new JLabel(Localization.getInstance().get("csvImportTagColumn"));
 				panel.add(lblTagColumns, "2, 10, right, default");
 			}
 			{
@@ -224,7 +224,7 @@ public class CSVImporterDialog extends JDialog {
 				txtTags.setColumns(10);
 			}
 			{
-				JLabel lblNotesColumn = new JLabel(Localization.getInstance().get("sNotesCol"));
+				JLabel lblNotesColumn = new JLabel(Localization.getInstance().get("csvImportNoteColumn"));
 				panel.add(lblNotesColumn, "2, 12, right, default");
 			}
 			{
@@ -234,11 +234,11 @@ public class CSVImporterDialog extends JDialog {
 				panel.add(spinnerNotes, "4, 12, fill, default");
 			}
 			{
-				JLabel lblAdvancedOptions = new JLabel(Localization.getInstance().get("sAdvOpt"));
+				JLabel lblAdvancedOptions = new JLabel(Localization.getInstance().get("advancedOptions"));
 				panel.add(lblAdvancedOptions, "2, 14, 3, 1");
 			}
 			{
-				JLabel lblEncoding = new JLabel(Localization.getInstance().get("sCharset"));
+				JLabel lblEncoding = new JLabel(Localization.getInstance().get("charset"));
 				panel.add(lblEncoding, "2, 16, right, default");
 			}
 			{
@@ -255,7 +255,7 @@ public class CSVImporterDialog extends JDialog {
 				panel.add(comboBoxCharset, "4, 16, fill, default");
 			}
 			{
-				JLabel lblCsvFormat = new JLabel(Localization.getInstance().get("sCSVForm"));
+				JLabel lblCsvFormat = new JLabel(Localization.getInstance().get("csvFormat"));
 				panel.add(lblCsvFormat, "2, 18, right, default");
 			}
 			{
@@ -283,7 +283,7 @@ public class CSVImporterDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton btnPreview = new JButton(Localization.getInstance().get("sPreview"));
+				JButton btnPreview = new JButton(Localization.getInstance().get("refreshPreview"));
 				btnPreview.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (updatePreview()) {
@@ -299,30 +299,30 @@ public class CSVImporterDialog extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						try {
 							int num = dic.importEntries(importer);
-							JOptionPane.showMessageDialog(contentPanel, Localization.getInstance().get("pStatImport1")+ " " + num + " " + Localization.getInstance().get("pStatImport2"), Localization.getInstance().get("pStatImportS"), JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(contentPanel, Localization.getInstance().get("importSuccesfullMessage")+ " " + num + " " + Localization.getInstance().get("pStatImport2"), Localization.getInstance().get("importSuccesfullMessageTitle"), JOptionPane.INFORMATION_MESSAGE);
 
 							setVisible(false);
 							dispose();
 						} catch (Exception ex) {
-							ErrorDialog.showError(Localization.getInstance().get("eStatImport"), ex);
+							ErrorDialog.showError(Localization.getInstance().get("importErrorMessage"), ex);
 						}
 					}
 				});
-				okButton.setToolTipText(Localization.getInstance().get("sPrevL"));
+				okButton.setToolTipText(Localization.getInstance().get("refreshPreviewHint"));
 				okButton.setEnabled(false);
-				okButton.setActionCommand(Localization.getInstance().get("dOK"));
+				okButton.setActionCommand(Localization.getInstance().get("ok"));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				cancelButton = new JButton(Localization.getInstance().get("dCancel"));
+				cancelButton = new JButton(Localization.getInstance().get("cancel"));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						setVisible(false);
 						dispose();
 					}
 				});
-				cancelButton.setActionCommand(Localization.getInstance().get("dCancel"));
+				cancelButton.setActionCommand(Localization.getInstance().get("cancel"));
 				buttonPane.add(cancelButton);
 			}
 		}
@@ -342,14 +342,14 @@ public class CSVImporterDialog extends JDialog {
 				tableContent.add(row);
 			}
 		} catch (Exception ex) {
-			ErrorDialog.showError(Localization.getInstance().get("eReadError"), ex);
+			ErrorDialog.showError(Localization.getInstance().get("fileReadExceptionMessage"), ex);
 			return false;
 		}
-		String[] columnNames = {Localization.getInstance().get("sWCName"),
-				Localization.getInstance().get("sDCName"),
-				Localization.getInstance().get("sCCName"),
-				Localization.getInstance().get("sTCName"),
-				Localization.getInstance().get("sNCName")};
+		String[] columnNames = {Localization.getInstance().get("wordColumnName"),
+				Localization.getInstance().get("definitionColumnName"),
+				Localization.getInstance().get("categoryColumnName"),
+				Localization.getInstance().get("tagsColumnName"),
+				Localization.getInstance().get("notesColumnName")};
 		TableModel model = new DefaultTableModel(tableContent.toArray(new String[tableContent.size()][5]), columnNames);
 		
 		table.setModel(model);
@@ -362,7 +362,7 @@ public class CSVImporterDialog extends JDialog {
 	 */
 	private boolean useSettings() {
 		if (file == null || !file.canRead()) {
-			JOptionPane.showMessageDialog(contentPanel, Localization.getInstance().get("dSelReadFile"), Localization.getInstance().get("dFileInval"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(contentPanel, Localization.getInstance().get("messageSelectReadableFile"), Localization.getInstance().get("messageSelectReadableFileTitle"), JOptionPane.ERROR_MESSAGE);
 			return false;
 		} else {
 			importer.file = file;
@@ -381,11 +381,11 @@ public class CSVImporterDialog extends JDialog {
 					if (i >= 0) {
 						tagCols.add(i);
 					} else {
-						JOptionPane.showMessageDialog(contentPanel, Localization.getInstance().get("dCommPlease"), Localization.getInstance().get("dCommErr"), JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(contentPanel, Localization.getInstance().get("messageCSVImportTagsInvalid"), Localization.getInstance().get("messageCSVImportTagsInvalidTitle"), JOptionPane.ERROR_MESSAGE);
 						return false;
 					}
 				} catch (NumberFormatException e) {
-					JOptionPane.showMessageDialog(contentPanel, Localization.getInstance().get("dCommPlease"), Localization.getInstance().get("dCommErr"), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(contentPanel, Localization.getInstance().get("messageCSVImportTagsInvalid"), Localization.getInstance().get("messageCSVImportTagsInvalidTitle"), JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 			}
@@ -412,7 +412,7 @@ public class CSVImporterDialog extends JDialog {
 			format = CSVFormat.TDF;
 			break;
 		default:
-			JOptionPane.showMessageDialog(contentPanel, Localization.getInstance().get("dInvalForm"), Localization.getInstance().get("dInvFormS"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(contentPanel, Localization.getInstance().get("messageCSVInvalidFormat"), Localization.getInstance().get("messageCSVInvalidFormatTitle"), JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		importer.format = format;
