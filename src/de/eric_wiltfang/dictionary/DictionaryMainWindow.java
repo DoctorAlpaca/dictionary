@@ -174,7 +174,7 @@ public class DictionaryMainWindow {
 		});
 		mnFile.add(mntmNew);
 		
-		JMenuItem mntmOpen = new JMenuItem("Open");
+		JMenuItem mntmOpen = new JMenuItem(Localization.getInstance().get("pOpen"));
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!askForSave()) {
@@ -475,7 +475,7 @@ public class DictionaryMainWindow {
 		panel.add(progressBar, "4, 1, left, center");
 		progressBar.setVisible(false);
 		
-		lblEntries = new JLabel("0 entries");
+		lblEntries = new JLabel("0 " + Localization.getInstance().get("sEntries"));
 		panel.add(lblEntries, "6, 1, right, center");
 		model.addTableModelListener(new TableModelListener() {
 			public void tableChanged(TableModelEvent e) {
