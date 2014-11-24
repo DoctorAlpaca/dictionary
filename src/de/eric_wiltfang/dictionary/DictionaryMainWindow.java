@@ -45,7 +45,6 @@ public class DictionaryMainWindow {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		pSettings = new Settings();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -109,16 +108,18 @@ public class DictionaryMainWindow {
 		setComponentEnabled(false);
 		setStatus(Localization.getInstance().get("gWelcome"), false);
 		
-		if(pSettings.containsKey("useLast") && pSettings.get("useLast").equals("true")
-				&& pSettings.containsKey("lastFile") && new File(pSettings.get("lastFile")).exists()){
+		if (Settings.getPreferences().getBoolean("useLast", false)) {
 			try {
 				setStatus(Localization.getInstance().get("pStatLoading"), true);
-				Dictionary dic = Dictionary.createFromFile(new File(pSettings.get("lastFile")));
-				frmDictionaryEditor.setTitle(Localization.getInstance().get("gTitle") + ": " + dic.getName());
-				defaultFile = new File(pSettings.get("lastFile"));
-				setDictionary(dic);
-				changed = false;
-				setStatus(Localization.getInstance().get("pStatLoaded"),false);
+				File lastDic = new File(Settings.getPreferences().get("lastFile", null));
+				if (lastDic.exists()) {
+					Dictionary dic = Dictionary.createFromFile(lastDic);
+					frmDictionaryEditor.setTitle(Localization.getInstance().get("gTitle") + ": " + dic.getName());
+					defaultFile = new File(Settings.getPreferences().get("lastFile", null));
+					setDictionary(dic);
+					changed = false;
+					setStatus(Localization.getInstance().get("pStatLoaded"),false);
+				}
 			} catch(Exception e){
 				showError(Localization.getInstance().get("eStatLoaded"), e);
 			}
@@ -193,8 +194,7 @@ public class DictionaryMainWindow {
 						setDictionary(dic);
 						changed = false;
 						setStatus(Localization.getInstance().get("pStatLoaded"), false);
-						pSettings.put("lastFile",chooser.getSelectedFile().getAbsolutePath());
-						pSettings.write();
+						Settings.getPreferences().put("lastFile", chooser.getSelectedFile().getAbsolutePath());
 					} catch (Exception ex) {
 						showError(Localization.getInstance().get("eStatLoaded"), ex);
 					}
@@ -297,20 +297,17 @@ public class DictionaryMainWindow {
 			@Override
 			public void itemStateChanged(ItemEvent e){
 				if(mntmUseLast.isSelected()){
-					pSettings.put("useLast","true");
+					Settings.getPreferences().putBoolean("useLast", true);
 				} else {
-					pSettings.put("useLast","false");
+					Settings.getPreferences().putBoolean("useLast", false);
 				}
-				try {
-					pSettings.write();
-				} catch(Exception e1){}
 			}
 		});
 
 		JSeparator separator_4 = new JSeparator();
 		mnFile.add(separator_4);
 
-		if(pSettings.containsKey("useLast") && pSettings.get("useLast").equals("true")) mntmUseLast.setSelected(true);
+		mntmUseLast.setSelected(Settings.getPreferences().getBoolean("useLast", false));
 		mnFile.add(mntmUseLast);
 
 		JSeparator separator = new JSeparator();
@@ -593,11 +590,6 @@ public class DictionaryMainWindow {
 			} catch (IOException ex) {
 				showError(Localization.getInstance().get("eCleanupError"), ex);
 			}
-		}
-		try {
-			pSettings.write();
-		} catch(IOException e){
-			// Nope.
 		}
 		System.exit(0);
 	}
