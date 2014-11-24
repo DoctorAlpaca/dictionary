@@ -16,6 +16,8 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 
+import de.eric_wiltfang.dictionary.local.Localization;
+
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -39,7 +41,7 @@ public class ErrorDialog extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			ErrorDialog dialog = new ErrorDialog(DictionaryMainWindow.local.get("xTestErr"), new Exception(DictionaryMainWindow.local.get("xTestExc")));
+			ErrorDialog dialog = new ErrorDialog(Localization.getInstance().get("xTestErr"), new Exception(Localization.getInstance().get("xTestExc")));
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -78,7 +80,7 @@ public class ErrorDialog extends JDialog {
 			contentPanel.add(separator, "1, 4, 2, 1");
 		}
 		{
-			JLabel lblAdditionalInformation = new JLabel(DictionaryMainWindow.local.get("sMoreInfo"));
+			JLabel lblAdditionalInformation = new JLabel(Localization.getInstance().get("sMoreInfo"));
 			contentPanel.add(lblAdditionalInformation, "2, 6");
 		}
 		{	
@@ -86,14 +88,14 @@ public class ErrorDialog extends JDialog {
 			contentPanel.add(scrollPane, "2, 8, fill, fill");
 			{
 				StringBuilder errorTextBuilder = new StringBuilder();
-				errorTextBuilder.append(DictionaryMainWindow.local.get("sErrorMess")+"\n");
+				errorTextBuilder.append(Localization.getInstance().get("sErrorMess")+"\n");
 				errorTextBuilder.append(message + "\n\n");
-				errorTextBuilder.append(DictionaryMainWindow.local.get("sExcMess")+"\n");
+				errorTextBuilder.append(Localization.getInstance().get("sExcMess")+"\n");
 				errorTextBuilder.append(ex.getMessage() + "\n\n");
 				
 				StringWriter stackTraceWriter = new StringWriter();
 				ex.printStackTrace(new PrintWriter(stackTraceWriter));
-				errorTextBuilder.append(DictionaryMainWindow.local.get("sStackTrace") + "\n");
+				errorTextBuilder.append(Localization.getInstance().get("sStackTrace") + "\n");
 				errorTextBuilder.append(stackTraceWriter.toString());
 				errorText = errorTextBuilder.toString();
 				
@@ -107,7 +109,7 @@ public class ErrorDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton(DictionaryMainWindow.local.get("dOK"));
+				JButton okButton = new JButton(Localization.getInstance().get("dOK"));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
@@ -115,7 +117,7 @@ public class ErrorDialog extends JDialog {
 					}
 				});
 				{
-					JButton btnCopyInformation = new JButton(DictionaryMainWindow.local.get("sCopyInfo"));
+					JButton btnCopyInformation = new JButton(Localization.getInstance().get("sCopyInfo"));
 					btnCopyInformation.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(errorText), new ClipboardOwner() {
@@ -128,7 +130,7 @@ public class ErrorDialog extends JDialog {
 					});
 					buttonPane.add(btnCopyInformation);
 				}
-				okButton.setActionCommand(DictionaryMainWindow.local.get("dOK"));
+				okButton.setActionCommand(Localization.getInstance().get("dOK"));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}

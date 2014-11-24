@@ -13,6 +13,7 @@ import java.util.Vector;
 
 import de.eric_wiltfang.dictionary.DictionaryEvent.DictionaryEventType;
 import de.eric_wiltfang.dictionary.Exporter.ExporterSettings;
+import de.eric_wiltfang.dictionary.local.Localization;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
@@ -30,7 +31,7 @@ public class Dictionary {
 		try {
 			workingDirectory = Files.createTempDirectory("dict");
 		} catch (IOException e) {
-			throw new IOException(DictionaryMainWindow.local.get("eTempFail") + " " + e);
+			throw new IOException(Localization.getInstance().get("eTempFail") + " " + e);
 		}
 	}
 	/** 
@@ -49,7 +50,7 @@ public class Dictionary {
 
 			workingDirectory.toFile().delete();
 		} catch(Exception e) {
-			throw new IOException(DictionaryMainWindow.local.get("eCleanupFail") + " " + e);
+			throw new IOException(Localization.getInstance().get("eCleanupFail") + " " + e);
 		}
 	}
 
@@ -57,7 +58,7 @@ public class Dictionary {
 		try {
 			connection = DriverManager.getConnection("jdbc:h2:" + workingDirectory + "/db", "sa", "");
 		} catch (SQLException e) {
-			throw new IOException(DictionaryMainWindow.local.get("eDBConFail") + " " + e);
+			throw new IOException(Localization.getInstance().get("eDBConFail") + " " + e);
 		}
 	}
 	private void init() throws IOException, SQLException {
@@ -86,7 +87,7 @@ public class Dictionary {
 			
 			connectDatabase();
 		} catch(Exception e) {
-			throw new IOException(DictionaryMainWindow.local.get("eFileFail") + " " + e);
+			throw new IOException(Localization.getInstance().get("eFileFail") + " " + e);
 		}
 	}
 	/**
@@ -96,13 +97,13 @@ public class Dictionary {
 		try {
 			connection.close();
 		} catch(Exception e) {
-			throw new Exception(DictionaryMainWindow.local.get("eReleaseFail") + " " + e);
+			throw new Exception(Localization.getInstance().get("eReleaseFail") + " " + e);
 		}
 		if (Files.exists(target.toPath())) {
 			try {
 				Files.delete(target.toPath());
 			} catch (IOException e) {
-				throw new IOException(DictionaryMainWindow.local.get("eSaveFail1") + " " + target + DictionaryMainWindow.local.get("eSaveFail2")+ " " + e);
+				throw new IOException(Localization.getInstance().get("eSaveFail1") + " " + target + Localization.getInstance().get("eSaveFail2")+ " " + e);
 			}
 		}
 		try {
@@ -126,7 +127,7 @@ public class Dictionary {
 				zip.addFile(f, parameters);
 			}
 		} catch (Exception e) {
-			throw new IOException(DictionaryMainWindow.local.get("eSaveFailS") + " " + e);
+			throw new IOException(Localization.getInstance().get("eSaveFailS") + " " + e);
 		}
 		connectDatabase();
 	}

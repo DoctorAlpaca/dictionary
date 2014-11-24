@@ -9,9 +9,17 @@ import java.util.HashMap;
  *
  */
 public class Settings extends HashMap<String, String>{
-    public Settings(){
+	private String d;
+	
+    public Settings() {
+    	String OS = System.getProperty("os.name").toLowerCase();
+    	if(OS.contains("win")) d = System.getenv("AppData") + "/.ewdictionary/"; else {
+    		d = System.getProperty("user.home");
+    	if(OS.contains("mac")) d += "/Library/Application Support/";
+    		d += "/.ewdictionary/";
+    	}
         try {
-            File file = new File(Localization.d + "settings.ini");
+            File file = new File(d + "settings.ini");
             if(!file.exists()){
                 FileWriter w = new FileWriter(file.getAbsolutePath());
                 w.write("#EWDict Global Settings");
@@ -23,7 +31,7 @@ public class Settings extends HashMap<String, String>{
         }
     }
     public void read() throws IOException {
-        BufferedReader r = new BufferedReader(new FileReader(Localization.d + "settings.ini"));
+        BufferedReader r = new BufferedReader(new FileReader(d + "settings.ini"));
         String k, l;
         while(null != (l = r.readLine())){
             l = l.trim();
@@ -35,8 +43,8 @@ public class Settings extends HashMap<String, String>{
         r.close();
     }
     public void write() throws IOException {
-        BufferedReader r = new BufferedReader(new FileReader(Localization.d + "settings.ini"));
-        FileWriter w = new FileWriter(Localization.d + "settings.ini");
+        BufferedReader r = new BufferedReader(new FileReader(d + "settings.ini"));
+        FileWriter w = new FileWriter(d + "settings.ini");
         ArrayList<String> keys = new ArrayList<String>();
         StringBuilder str = new StringBuilder("#EWDict Global Settings\n");
         String k, l;

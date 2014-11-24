@@ -15,6 +15,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 
 import de.eric_wiltfang.dictionary.*;
+import de.eric_wiltfang.dictionary.local.Localization;
 
 import javax.swing.JCheckBox;
 
@@ -62,7 +63,7 @@ public class CSVExporterDialog extends JDialog {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		{
-			chckbxAddColumnHeaders = new JCheckBox(DictionaryMainWindow.local.get("pAddCollH"));
+			chckbxAddColumnHeaders = new JCheckBox(Localization.getInstance().get("pAddCollH"));
 			contentPanel.add(chckbxAddColumnHeaders, "2, 2");
 		}
 		{
@@ -70,11 +71,11 @@ public class CSVExporterDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton(DictionaryMainWindow.local.get("dExport"));
+				JButton okButton = new JButton(Localization.getInstance().get("dExport"));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						CostumFileChooser chooser = new CostumFileChooser();
-						FileNameExtensionFilter filter = new FileNameExtensionFilter(DictionaryMainWindow.local.get("dCSVFilter2"), "csv");
+						FileNameExtensionFilter filter = new FileNameExtensionFilter(Localization.getInstance().get("dCSVFilter2"), "csv");
 						chooser.setFileFilter(filter);
 						if (!dic.getName().isEmpty()) {
 							chooser.setSelectedFile(new File(dic.getName() + ".csv"));
@@ -90,26 +91,26 @@ public class CSVExporterDialog extends JDialog {
 								setVisible(false);
 								dispose();
 							} catch (Exception ex) {
-								ErrorDialog.showError(DictionaryMainWindow.local.get("eStatExport"), ex);
+								ErrorDialog.showError(Localization.getInstance().get("eStatExport"), ex);
 							}
 						} else {
 							return;
 						}
 					}
 				});
-				okButton.setActionCommand(DictionaryMainWindow.local.get("dOK"));
+				okButton.setActionCommand(Localization.getInstance().get("dOK"));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton(DictionaryMainWindow.local.get("dCancel"));
+				JButton cancelButton = new JButton(Localization.getInstance().get("dCancel"));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
 						dispose();
 					}
 				});
-				cancelButton.setActionCommand(DictionaryMainWindow.local.get("dCancel"));
+				cancelButton.setActionCommand(Localization.getInstance().get("dCancel"));
 				buttonPane.add(cancelButton);
 			}
 		}
