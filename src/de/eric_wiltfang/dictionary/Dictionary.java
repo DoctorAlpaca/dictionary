@@ -1,22 +1,19 @@
 package de.eric_wiltfang.dictionary;
-import java.nio.charset.Charset;
-import java.nio.file.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.sql.*;
-import java.text.MessageFormat;
-import java.util.EnumSet;
-import java.util.Vector;
 
 import de.eric_wiltfang.dictionary.DictionaryEvent.DictionaryEventType;
 import de.eric_wiltfang.dictionary.Exporter.ExporterSettings;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.*;
+import java.text.MessageFormat;
+import java.util.EnumSet;
+import java.util.Vector;
 
 public class Dictionary {
 	private DictionarySettings settings;
@@ -31,7 +28,7 @@ public class Dictionary {
 		try {
 			workingDirectory = Files.createTempDirectory("dict");
 		} catch (IOException e) {
-			throw new IOException(Localization.getInstance().get("temporaryFolderError") + " " + e);
+			throw new IOException(Util.get("temporaryFolderError") + " " + e);
 		}
 	}
 	/** 
@@ -50,7 +47,7 @@ public class Dictionary {
 
 			workingDirectory.toFile().delete();
 		} catch(Exception e) {
-			throw new IOException(Localization.getInstance().get("cleanupExceptionMessage") + " " + e);
+			throw new IOException(Util.get("cleanupExceptionMessage") + " " + e);
 		}
 	}
 
@@ -58,7 +55,7 @@ public class Dictionary {
 		try {
 			connection = DriverManager.getConnection("jdbc:h2:" + workingDirectory + "/db", "sa", "");
 		} catch (SQLException e) {
-			throw new IOException(Localization.getInstance().get("databaseConnectionExceptionMessage") + " " + e);
+			throw new IOException(Util.get("databaseConnectionExceptionMessage") + " " + e);
 		}
 	}
 	private void init() throws IOException, SQLException {
@@ -87,7 +84,7 @@ public class Dictionary {
 			
 			connectDatabase();
 		} catch(Exception e) {
-			throw new IOException(Localization.getInstance().get("fileReadExceptionMessage") + " " + e);
+			throw new IOException(Util.get("fileReadExceptionMessage") + " " + e);
 		}
 	}
 	/**
@@ -97,13 +94,13 @@ public class Dictionary {
 		try {
 			connection.close();
 		} catch(Exception e) {
-			throw new Exception(Localization.getInstance().get("databaseReleaseExceptionMessage") + " " + e);
+			throw new Exception(Util.get("databaseReleaseExceptionMessage") + " " + e);
 		}
 		if (Files.exists(target.toPath())) {
 			try {
 				Files.delete(target.toPath());
 			} catch (IOException e) {
-				throw new IOException(MessageFormat.format(Localization.getInstance().get("fileExistsExceptionMessage"), target) + e);
+				throw new IOException(MessageFormat.format(Util.get("fileExistsExceptionMessage"), target) + e);
 			}
 		}
 		try {
@@ -127,7 +124,7 @@ public class Dictionary {
 				zip.addFile(f, parameters);
 			}
 		} catch (Exception e) {
-			throw new IOException(Localization.getInstance().get("fileSaveExceptionMessage") + " " + e);
+			throw new IOException(Util.get("fileSaveExceptionMessage") + " " + e);
 		}
 		connectDatabase();
 	}

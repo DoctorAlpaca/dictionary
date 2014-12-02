@@ -1,12 +1,12 @@
 Dictionary
 ==========
 
-A programm to manage vocabularies for conlangs.
+A program to manage vocabularies for conlangs.
 
 Installation
 ------------
 
-Download the latest release [here](https://github.com/DoctorAlpaca/dictionary/releases). Make sure you have Java version 7 or later installed and open the .jar file. Alternativly compile the program for yourself.
+Download the latest release [here](https://github.com/DoctorAlpaca/dictionary/releases). Make sure you have Java version 7 or later installed and open the .jar file. Alternatively compile the program for yourself.
 
 
 Compiling it yourself
