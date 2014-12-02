@@ -1,32 +1,21 @@
 package de.eric_wiltfang.dictionary;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
 
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JSeparator;
-
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class ErrorDialog extends JDialog {
 	private static final long serialVersionUID = -955724717365117867L;
@@ -78,7 +67,7 @@ public class ErrorDialog extends JDialog {
 			contentPanel.add(separator, "1, 4, 2, 1");
 		}
 		{
-			JLabel lblAdditionalInformation = new JLabel(Localization.getInstance().get("additionalInformation"));
+			JLabel lblAdditionalInformation = new JLabel(Util.get("additionalInformation"));
 			contentPanel.add(lblAdditionalInformation, "2, 6");
 		}
 		{	
@@ -86,14 +75,14 @@ public class ErrorDialog extends JDialog {
 			contentPanel.add(scrollPane, "2, 8, fill, fill");
 			{
 				StringBuilder errorTextBuilder = new StringBuilder();
-				errorTextBuilder.append(Localization.getInstance().get("errorMessage")+"\n");
+				errorTextBuilder.append(Util.get("errorMessage")+"\n");
 				errorTextBuilder.append(message + "\n\n");
-				errorTextBuilder.append(Localization.getInstance().get("exceptionMessage")+"\n");
+				errorTextBuilder.append(Util.get("exceptionMessage")+"\n");
 				errorTextBuilder.append(ex.getMessage() + "\n\n");
 				
 				StringWriter stackTraceWriter = new StringWriter();
 				ex.printStackTrace(new PrintWriter(stackTraceWriter));
-				errorTextBuilder.append(Localization.getInstance().get("stackTrace") + "\n");
+				errorTextBuilder.append(Util.get("stackTrace") + "\n");
 				errorTextBuilder.append(stackTraceWriter.toString());
 				errorText = errorTextBuilder.toString();
 				
@@ -107,7 +96,7 @@ public class ErrorDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton(Localization.getInstance().get("ok"));
+				JButton okButton = new JButton(Util.get("ok"));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
@@ -115,7 +104,7 @@ public class ErrorDialog extends JDialog {
 					}
 				});
 				{
-					JButton btnCopyInformation = new JButton(Localization.getInstance().get("copyErrorInformation"));
+					JButton btnCopyInformation = new JButton(Util.get("copyErrorInformation"));
 					btnCopyInformation.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(errorText), new ClipboardOwner() {
@@ -128,7 +117,7 @@ public class ErrorDialog extends JDialog {
 					});
 					buttonPane.add(btnCopyInformation);
 				}
-				okButton.setActionCommand(Localization.getInstance().get("ok"));
+				okButton.setActionCommand(Util.get("ok"));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}

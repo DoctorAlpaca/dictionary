@@ -1,12 +1,12 @@
 package de.eric_wiltfang.dictionary;
-import java.sql.SQLException;
-import java.util.Vector;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-
-import org.apache.commons.lang3.StringEscapeUtils;
+import java.sql.SQLException;
+import java.util.Vector;
 
 
 public class EntryTableModel implements TableModel, DictionaryListener {
@@ -76,10 +76,10 @@ public class EntryTableModel implements TableModel, DictionaryListener {
 	@Override
 	public String getColumnName(int col) {
 		switch (col) {
-		case 0: return Localization.getInstance().get("wordColumnName");
-		case 1: return Localization.getInstance().get("definitionColumnName");
-		case 2: return Localization.getInstance().get("categoryColumnName");
-		case 3: return Localization.getInstance().get("notesColumnName");
+		case 0: return Util.get("wordColumnName");
+		case 1: return Util.get("definitionColumnName");
+		case 2: return Util.get("categoryColumnName");
+		case 3: return Util.get("notesColumnName");
 		default:
 			return null;
 		}
@@ -96,7 +96,7 @@ public class EntryTableModel implements TableModel, DictionaryListener {
 		try {
 			entry = dic.getEntry(ids.get(row));
 		} catch (Exception ex) {
-			return Localization.getInstance().get("error") + " " + ex;
+			return Util.get("error") + " " + ex;
 		}
 		switch(col) {
 		case 0:

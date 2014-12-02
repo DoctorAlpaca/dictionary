@@ -1,25 +1,17 @@
 package de.eric_wiltfang.dictionary.csv;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
-
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
 import de.eric_wiltfang.dictionary.*;
 
-import javax.swing.JCheckBox;
-
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
 public class CSVExporterDialog extends JDialog {
@@ -62,7 +54,7 @@ public class CSVExporterDialog extends JDialog {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		{
-			chckbxAddColumnHeaders = new JCheckBox(Localization.getInstance().get("csvExportAddHeader"));
+			chckbxAddColumnHeaders = new JCheckBox(Util.get("csvExportAddHeader"));
 			contentPanel.add(chckbxAddColumnHeaders, "2, 2");
 		}
 		{
@@ -70,11 +62,11 @@ public class CSVExporterDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton(Localization.getInstance().get("export"));
+				JButton okButton = new JButton(Util.get("export"));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						CostumFileChooser chooser = new CostumFileChooser();
-						FileNameExtensionFilter filter = new FileNameExtensionFilter(Localization.getInstance().get("csvFiletypeFilterName"), "csv");
+						FileNameExtensionFilter filter = new FileNameExtensionFilter(Util.get("csvFiletypeFilterName"), "csv");
 						chooser.setFileFilter(filter);
 						if (!dic.getName().isEmpty()) {
 							chooser.setSelectedFile(new File(dic.getName() + ".csv"));
@@ -90,26 +82,26 @@ public class CSVExporterDialog extends JDialog {
 								setVisible(false);
 								dispose();
 							} catch (Exception ex) {
-								ErrorDialog.showError(Localization.getInstance().get("exportErrorMessage"), ex);
+								ErrorDialog.showError(Util.get("exportErrorMessage"), ex);
 							}
 						} else {
 							return;
 						}
 					}
 				});
-				okButton.setActionCommand(Localization.getInstance().get("ok"));
+				okButton.setActionCommand(Util.get("ok"));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton(Localization.getInstance().get("cancel"));
+				JButton cancelButton = new JButton(Util.get("cancel"));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
 						dispose();
 					}
 				});
-				cancelButton.setActionCommand(Localization.getInstance().get("cancel"));
+				cancelButton.setActionCommand(Util.get("cancel"));
 				buttonPane.add(cancelButton);
 			}
 		}

@@ -1,29 +1,14 @@
 package de.eric_wiltfang.dictionary;
 
-import java.util.Vector;
-
-import javax.swing.JFrame;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Vector;
 
 public class EditEntryWindow {	
 	private JFrame frame;
@@ -106,7 +91,7 @@ public class EditEntryWindow {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.LINE_GAP_ROWSPEC,}));
 		
-		JLabel lblWord = new JLabel(Localization.getInstance().get("wordColumnName"));
+		JLabel lblWord = new JLabel(Util.get("wordColumnName"));
 		lblWord.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblWord, "2, 2, right, default");
 		frame.addComponentListener(new ComponentAdapter() {
@@ -127,7 +112,7 @@ public class EditEntryWindow {
 		wordTextField.setColumns(10);
 		wordTextField.addKeyListener(keyAdapter);
 		
-		JLabel lblDefinition = new JLabel(Localization.getInstance().get("definitionColumnName"));
+		JLabel lblDefinition = new JLabel(Util.get("definitionColumnName"));
 		lblDefinition.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblDefinition, "2, 4");
 		
@@ -150,7 +135,7 @@ public class EditEntryWindow {
 		});
 		defTextArea.addKeyListener(keyAdapter);
 		
-		JLabel lblNotes = new JLabel(Localization.getInstance().get("notesColumnName"));
+		JLabel lblNotes = new JLabel(Util.get("notesColumnName"));
 		lblNotes.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblNotes, "2, 6");
 		
@@ -173,7 +158,7 @@ public class EditEntryWindow {
 		});
 		notesTextArea.addKeyListener(keyAdapter);
 		
-		JLabel lblCategory = new JLabel(Localization.getInstance().get("categoryColumnName"));
+		JLabel lblCategory = new JLabel(Util.get("categoryColumnName"));
 		lblCategory.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblCategory, "2, 8, right, default");
 		
@@ -182,7 +167,7 @@ public class EditEntryWindow {
 		catTextField.setColumns(10);
 		catTextField.addKeyListener(keyAdapter);
 		
-		JLabel lblTags = new JLabel(Localization.getInstance().get("tagsColumnName"));
+		JLabel lblTags = new JLabel(Util.get("tagsColumnName"));
 		lblTags.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.getContentPane().add(lblTags, "2, 10, right, default");
 		
@@ -191,7 +176,7 @@ public class EditEntryWindow {
 		tagsTextField.setColumns(10);
 		tagsTextField.addKeyListener(keyAdapter);
 		
-		btnSave = new JButton(Localization.getInstance().get("menuItemFileSave"));
+		btnSave = new JButton(Util.get("menuItemFileSave"));
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveEntry();
@@ -199,7 +184,7 @@ public class EditEntryWindow {
 		});
 		frame.getContentPane().add(btnSave, "4, 12");
 		
-		btnCancel = new JButton(Localization.getInstance().get("cancel"));
+		btnCancel = new JButton(Util.get("cancel"));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Maybe ask for saving?
@@ -242,7 +227,7 @@ public class EditEntryWindow {
 			updateEntry();
 			dic.insertEntry(entry);
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(frame, Localization.getInstance().get("fileSaveErrorMessage") + " " + ex, Localization.getInstance().get("fileSaveErrorTitle"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(frame, Util.get("fileSaveErrorMessage") + " " + ex, Util.get("fileSaveErrorTitle"), JOptionPane.ERROR_MESSAGE);
 		}
 		
 		if (newEntryOnSave) {
@@ -262,11 +247,11 @@ public class EditEntryWindow {
 	public void setNewEntryOnSave(boolean b) {
 		newEntryOnSave = b;
 		if (b) {
-			btnSave.setText(Localization.getInstance().get("entryEditSaveAndContinue"));
-			btnCancel.setText(Localization.getInstance().get("entryEditStopEntry"));
+			btnSave.setText(Util.get("entryEditSaveAndContinue"));
+			btnCancel.setText(Util.get("entryEditStopEntry"));
 		} else {
-			btnSave.setText(Localization.getInstance().get("menuItemFileSave"));
-			btnCancel.setText(Localization.getInstance().get("cancel"));
+			btnSave.setText(Util.get("menuItemFileSave"));
+			btnCancel.setText(Util.get("cancel"));
 		}
 	}
 }
