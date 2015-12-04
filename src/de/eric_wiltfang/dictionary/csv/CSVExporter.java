@@ -37,6 +37,7 @@ public class CSVExporter implements Exporter {
 
 	public void finish() throws IOException {
 		exporter.flush();
+		exporter.close();
 	}
 
 	public EnumSet<ExporterSettings> getSettings() {

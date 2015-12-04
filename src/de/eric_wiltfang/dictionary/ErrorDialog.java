@@ -35,7 +35,7 @@ public class ErrorDialog extends JDialog {
 	private String errorText;
 
 	/**
-	 * Launch the application.
+	 * Test driver.
 	 */
 	public static void main(String[] args) {
 		try {
@@ -78,7 +78,7 @@ public class ErrorDialog extends JDialog {
 			contentPanel.add(separator, "1, 4, 2, 1");
 		}
 		{
-			JLabel lblAdditionalInformation = new JLabel(Localization.getInstance().get("additionalInformation"));
+			JLabel lblAdditionalInformation = new JLabel(DictionaryMainWindow.getInstance().getLocalisedString("additionalInformation"));
 			contentPanel.add(lblAdditionalInformation, "2, 6");
 		}
 		{	
@@ -86,14 +86,14 @@ public class ErrorDialog extends JDialog {
 			contentPanel.add(scrollPane, "2, 8, fill, fill");
 			{
 				StringBuilder errorTextBuilder = new StringBuilder();
-				errorTextBuilder.append(Localization.getInstance().get("errorMessage")+"\n");
+				errorTextBuilder.append(DictionaryMainWindow.getInstance().getLocalisedString("errorMessage")+"\n");
 				errorTextBuilder.append(message + "\n\n");
-				errorTextBuilder.append(Localization.getInstance().get("exceptionMessage")+"\n");
+				errorTextBuilder.append(DictionaryMainWindow.getInstance().getLocalisedString("exceptionMessage")+"\n");
 				errorTextBuilder.append(ex.getMessage() + "\n\n");
 				
 				StringWriter stackTraceWriter = new StringWriter();
 				ex.printStackTrace(new PrintWriter(stackTraceWriter));
-				errorTextBuilder.append(Localization.getInstance().get("stackTrace") + "\n");
+				errorTextBuilder.append(DictionaryMainWindow.getInstance().getLocalisedString("stackTrace") + "\n");
 				errorTextBuilder.append(stackTraceWriter.toString());
 				errorText = errorTextBuilder.toString();
 				
@@ -107,7 +107,7 @@ public class ErrorDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton(Localization.getInstance().get("ok"));
+				JButton okButton = new JButton(DictionaryMainWindow.getInstance().getLocalisedString("ok"));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
@@ -115,7 +115,7 @@ public class ErrorDialog extends JDialog {
 					}
 				});
 				{
-					JButton btnCopyInformation = new JButton(Localization.getInstance().get("copyErrorInformation"));
+					JButton btnCopyInformation = new JButton(DictionaryMainWindow.getInstance().getLocalisedString("copyErrorInformation"));
 					btnCopyInformation.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(errorText), new ClipboardOwner() {
@@ -128,7 +128,7 @@ public class ErrorDialog extends JDialog {
 					});
 					buttonPane.add(btnCopyInformation);
 				}
-				okButton.setActionCommand(Localization.getInstance().get("ok"));
+				okButton.setActionCommand(DictionaryMainWindow.getInstance().getLocalisedString("ok"));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}

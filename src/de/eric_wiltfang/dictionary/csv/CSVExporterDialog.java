@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -62,7 +61,7 @@ public class CSVExporterDialog extends JDialog {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		{
-			chckbxAddColumnHeaders = new JCheckBox(Localization.getInstance().get("csvExportAddHeader"));
+			chckbxAddColumnHeaders = new JCheckBox(DictionaryMainWindow.getInstance().getLocalisedString("csvExportAddHeader"));
 			contentPanel.add(chckbxAddColumnHeaders, "2, 2");
 		}
 		{
@@ -70,46 +69,41 @@ public class CSVExporterDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton(Localization.getInstance().get("export"));
+				JButton okButton = new JButton(DictionaryMainWindow.getInstance().getLocalisedString("export"));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						CostumFileChooser chooser = new CostumFileChooser();
-						FileNameExtensionFilter filter = new FileNameExtensionFilter(Localization.getInstance().get("csvFiletypeFilterName"), "csv");
-						chooser.setFileFilter(filter);
-						if (!dic.getName().isEmpty()) {
-							chooser.setSelectedFile(new File(dic.getName() + ".csv"));
-						}
-						
-						if (chooser.showSaveDialog(contentPanel) == CostumFileChooser.APPROVE_OPTION) {
-							File f = chooser.getSelectedFile();
-							try {
-								CSVExporter exp = new CSVExporter(f);
-								exp.printHeader = chckbxAddColumnHeaders.isSelected();
-								dic.export(exp);
+					  CFileChooser chooser = new CFileChooser();
+					  File file = null;
+					  if(!dic.getName().isEmpty())
+					    file = new File(dic.getName() + ".csv");
+					  if(chooser.save(contentPanel, file, DictionaryMainWindow.getInstance().getLocalisedString("csvFiletypeFilterName"), "csv")){
+					    File f = chooser.getSelectedFile();
+              try {
+                CSVExporter exp = new CSVExporter(f);
+                exp.printHeader = chckbxAddColumnHeaders.isSelected();
+                dic.export(exp);
 
-								setVisible(false);
-								dispose();
-							} catch (Exception ex) {
-								ErrorDialog.showError(Localization.getInstance().get("exportErrorMessage"), ex);
-							}
-						} else {
-							return;
-						}
+                setVisible(false);
+                dispose();
+              } catch (Exception ex) {
+                ErrorDialog.showError(DictionaryMainWindow.getInstance().getLocalisedString("exportErrorMessage"), ex);
+              }
+					  }
 					}
 				});
-				okButton.setActionCommand(Localization.getInstance().get("ok"));
+				okButton.setActionCommand(DictionaryMainWindow.getInstance().getLocalisedString("ok"));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton(Localization.getInstance().get("cancel"));
+				JButton cancelButton = new JButton(DictionaryMainWindow.getInstance().getLocalisedString("cancel"));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
 						dispose();
 					}
 				});
-				cancelButton.setActionCommand(Localization.getInstance().get("cancel"));
+				cancelButton.setActionCommand(DictionaryMainWindow.getInstance().getLocalisedString("cancel"));
 				buttonPane.add(cancelButton);
 			}
 		}
