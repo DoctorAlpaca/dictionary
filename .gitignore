@@ -5,3 +5,4 @@
 .classpath
 dictionary.iml
 dependency-reduced-pom.xml
+/bin/

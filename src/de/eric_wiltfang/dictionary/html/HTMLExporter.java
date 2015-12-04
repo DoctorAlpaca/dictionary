@@ -94,6 +94,7 @@ public class HTMLExporter implements Exporter {
 		writer.write(outro);
 		
 		writer.flush();
+		writer.close();
 	}
 
 	@Override
